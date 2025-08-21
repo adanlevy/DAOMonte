@@ -1664,6 +1664,7 @@ export default function App() {
         name: r.name || r.nombre || "",
         surname: r.surname || r.apellido || "",
         dni: r.dni || r.DNI || "",
+        puesto: r.puesto || "",
         address: addr
       });
     });
@@ -1675,7 +1676,8 @@ export default function App() {
         address: addr,
         name: found?.name || "",
         surname: found?.surname || "",
-        dni: found?.dni || ""
+        dni: found?.dni || "",
+        puesto: found?.puesto || ""
       });
     });
 
@@ -1696,6 +1698,7 @@ export default function App() {
           name: r.name || r.nombre || "",
           surname: r.surname || r.apellido || "",
           dni: r.dni || r.DNI || "",
+          puesto: r.puesto || "",
           address: (r.address || r.wallet || "").trim()
         }));
         setCsvData(rows);

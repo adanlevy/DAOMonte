@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
-import { ListFilter, Loader2 } from "lucide-react";
+import { ListFilter, Loader2, Check, X } from "lucide-react";
+import { ethers } from "ethers";
 import { toast } from "react-toastify"; // Importar toast
 
 export default function RosterTable() {
@@ -106,30 +107,40 @@ export default function RosterTable() {
               <th className="p-2 text-left">Apellido</th>
               <th className="p-2 text-left">DNI</th>
               <th className="p-2 text-left">Address</th>
+              <th className="p-2 text-left">Hash</th>
             </tr>
           </thead>
           <tbody>
-            {filteredRoster.map((r, idx) => (
-              <tr key={idx} className="border-t">
-                <td className="p-2">
-                  <input
-                    type="checkbox"
-                    checked={!!rosterSelection[r.address]}
-                    onChange={(e) =>
-                      setRosterSelection((s) => ({ ...s, [r.address]: e.target.checked }))
-                    }
-                    aria-label={`Seleccionar ${r.name || r.address}`}
-                  />
-                </td>
-                <td className="p-2">{r.name || r.nombre || ""}</td>
-                <td className="p-2">{r.surname || r.apellido || ""}</td>
-                <td className="p-2">{r.dni || r.DNI || ""}</td>
-                <td className="p-2 font-mono">{r.address}</td>
-              </tr>
-            ))}
+            {filteredRoster.map((r, idx) => {
+              const dni = r.dni || r.DNI || "";
+              const expected = r.puesto || "";
+              const hash = dni ? ethers.keccak256(ethers.toUtf8Bytes(dni)) : "";
+              const ok = expected && hash === expected;
+              return (
+                <tr key={idx} className="border-t">
+                  <td className="p-2">
+                    <input
+                      type="checkbox"
+                      checked={!!rosterSelection[r.address]}
+                      onChange={(e) =>
+                        setRosterSelection((s) => ({ ...s, [r.address]: e.target.checked }))
+                      }
+                      aria-label={`Seleccionar ${r.name || r.address}`}
+                    />
+                  </td>
+                  <td className="p-2">{r.name || r.nombre || ""}</td>
+                  <td className="p-2">{r.surname || r.apellido || ""}</td>
+                  <td className="p-2">{dni}</td>
+                  <td className="p-2 font-mono">{r.address}</td>
+                  <td className="p-2 text-center">
+                    {ok ? <Check className="w-4 h-4 text-green-600" /> : <X className="w-4 h-4 text-red-600" />}
+                  </td>
+                </tr>
+              );
+            })}
             {!filteredRoster.length && (
               <tr>
-                <td colSpan={5} className="p-3 text-center text-gray-500">
+                <td colSpan={6} className="p-3 text-center text-gray-500">
                   Sin datos. Cargá un CSV/URL o asegurate de tener grupos con integrantes.
                 </td>
               </tr>
