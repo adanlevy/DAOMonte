@@ -20,6 +20,7 @@ export default function RosterTable() {
     fetchAll,
     demoGroups,
     withGas, // Añadido del contexto
+    setGroupMembersCache,
   } = useGroupDAO();
 
   const actionBulkAddToGroup = async (addrs, gid) => {
@@ -31,6 +32,14 @@ export default function RosterTable() {
       );
       await tx.wait();
       setRosterSelection({});
+      try {
+        const list = await (contract.getGroupMembersSlice
+          ? contract.getGroupMembersSlice(Number(gid), 0, 1000)
+          : contract.getGroupMembers(Number(gid)));
+        setGroupMembersCache((prev) => ({ ...prev, [gid]: list }));
+      } catch {
+        // ignore errors loading members
+      }
       await fetchAll();
     });
   };

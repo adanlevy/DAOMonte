@@ -1309,7 +1309,7 @@ const nowSec = () => Math.floor(Date.now() / 1000);
 const withGas = async (estimatePromise, txPromiseFactory) => {
   try {
     const est = await estimatePromise;
-    const gasLimit = (est * 120n) / 100n; // +20%
+    const gasLimit = (est * 110n) / 100n; // +10%
     return await txPromiseFactory({ gasLimit });
   } catch {
     return await txPromiseFactory({});
