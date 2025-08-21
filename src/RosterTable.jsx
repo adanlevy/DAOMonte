@@ -3,6 +3,7 @@ import { useGroupDAO } from "./GroupDAOContext";
 import { ListFilter, Loader2, Check, X } from "lucide-react";
 import { ethers } from "ethers";
 import { toast } from "react-toastify"; // Importar toast
+import Papa from "papaparse";
 
 export default function RosterTable() {
   const {
@@ -113,10 +114,39 @@ export default function RosterTable() {
     );
   }, [roster, rosterFilter]);
 
+  const downloadCSV = () => {
+    const rows = filteredRoster.map((r) => {
+      const name = r.name || r.nombre || "";
+      const surname = r.surname || r.apellido || "";
+      const dni = r.dni || r.DNI || "";
+      const address = r.address || "";
+      const expected = chainHashes[address.toLowerCase()] || "";
+      const hash = dni ? ethers.keccak256(ethers.toUtf8Bytes(dni)) : "";
+      const ok = expected && hash.toLowerCase() === expected.toLowerCase();
+      return {
+        Nombre: name,
+        Apellido: surname,
+        DNI: dni,
+        Address: address,
+        Hash: ok ? "OK" : "X",
+      };
+    });
+    const csv = Papa.unparse(rows);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "roster.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="mt-4">
       <div className="text-sm font-semibold mb-2">Agregar personas a grupo</div>
-      <div className="grid md:grid-cols-3 gap-2 items-center mb-3">
+      <div className="grid md:grid-cols-4 gap-2 items-center mb-3">
         <div className="flex items-center gap-2">
           <ListFilter className="w-4 h-4" />
           <input
@@ -154,6 +184,13 @@ export default function RosterTable() {
           aria-label="Agregar usuarios seleccionados al grupo"
         >
           {isBusy("bulkAdd") && <Loader2 className="w-4 h-4 animate-spin" />} Agregar seleccionados
+        </button>
+        <button
+          onClick={downloadCSV}
+          className="rounded-xl bg-blue-600 text-white px-4 py-2 hover:opacity-90"
+          aria-label="Descargar roster como CSV"
+        >
+          Descargar CSV
         </button>
       </div>
       <div className="max-h-60 overflow-auto border rounded-xl">
