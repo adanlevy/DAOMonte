@@ -43,6 +43,7 @@ export default function AdminPanel() {
     withGas,
     clearRosterAssociation,
     roster, // Añadido para verificar si el usuario está en el roster
+    registerUser,
   } = useGroupDAO();
 
   const [adminOpen, setAdminOpen] = React.useState(false);
@@ -73,30 +74,24 @@ export default function AdminPanel() {
       fetchAll(); // Forzar recarga de datos al conectar
     }
     // Verificar si el usuario ya está registrado en el roster
-    if (contract && roster) {
-      const userAddress = contract.signer?.getAddress();
-      if (userAddress) {
-        const isRegistered = roster.some((r) => r.address.toLowerCase() === userAddress.toLowerCase());
-        setIsUserRegistered(isRegistered);
+    (async () => {
+      if (contract && roster) {
+        try {
+          const userAddress = await contract.signer?.getAddress();
+          if (userAddress) {
+            const isRegistered = roster.some((r) => r.address.toLowerCase() === userAddress.toLowerCase());
+            setIsUserRegistered(isRegistered);
+          }
+        } catch {
+          // ignorar errores al obtener la dirección
+        }
       }
-    }
+    })();
   }, [contract, isAdmin, demo, fetchAll, roster]);
 
   const onRegisterUser = async (data) => {
-    if (demo) return toast.success("Demo: usuario registrado");
-    if (!contract) return toast.error("Conectá tu wallet");
-    const userAddress = await contract.signer.getAddress();
-    await run("registerUser", async () => {
-      const tx = await withGas(
-        contract.registerUser.estimateGas(userAddress, data.name, data.surname, data.dni),
-        (opts) => contract.registerUser(userAddress, data.name, data.surname, data.dni, opts)
-      );
-      await tx.wait();
-      setIsUserRegistered(true);
-      await fetchAll();
-      toast.success("Usuario registrado exitosamente");
-      resetUser();
-    });
+    await registerUser(data.name, data.surname, data.dni);
+    resetUser();
   };
 
   const onCreateGroup = async (data) => {
