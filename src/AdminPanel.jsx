@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
@@ -42,18 +42,17 @@ export default function AdminPanel() {
     admins,
     withGas,
     clearRosterAssociation,
-    roster, // Añadido para verificar si el usuario está en el roster
     registerUser,
     groupMembersCache,
     setGroupMembersCache,
     openMembersGroup,
     setOpenMembersGroup,
     rosterIndex,
+    registered,
   } = useGroupDAO();
 
   const [adminOpen, setAdminOpen] = React.useState(false);
   const [adminAddr, setAdminAddr] = React.useState("");
-  const [isUserRegistered, setIsUserRegistered] = useState(false); // Estado para rastrear registro del usuario
   const {
     register: userForm,
     handleSubmit: handleUserSubmit,
@@ -78,26 +77,11 @@ export default function AdminPanel() {
     if (contract && !isAdmin && !demo) {
       fetchAll(); // Forzar recarga de datos al conectar
     }
-    // Verificar si el usuario ya está registrado en el roster
-    (async () => {
-      if (contract && roster) {
-        try {
-          const userAddress = await contract.signer?.getAddress();
-          if (userAddress) {
-            const isRegistered = roster.some((r) => r.address.toLowerCase() === userAddress.toLowerCase());
-            setIsUserRegistered(isRegistered);
-          }
-        } catch {
-          // ignorar errores al obtener la dirección
-        }
-      }
-    })();
-  }, [contract, isAdmin, demo, fetchAll, roster]);
+  }, [contract, isAdmin, demo, fetchAll]);
 
   const onRegisterUser = async (data) => {
     await registerUser(data.name, data.surname, data.dni);
     resetUser();
-    setIsUserRegistered(true);
   };
 
   const onCreateGroup = async (data) => {
@@ -208,7 +192,7 @@ export default function AdminPanel() {
 
   return (
     <>
-      {!isUserRegistered && contract && (
+      {!registered && contract && (
         <div className="mb-4 p-4 border rounded-xl bg-white shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Registro de Usuario</h3>
           <p className="text-sm text-gray-600 mb-4">Ingresa tus datos para asociarlos a tu billetera la primera vez.</p>
