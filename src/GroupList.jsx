@@ -1,7 +1,7 @@
 import React from "react";
 import { useGroupDAO } from "./App";
 import { Users, ChevronDown, ChevronRight, Loader2, Eye } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const Card = ({ title, icon, children, actions, className = "" }) => (
   <div className={`rounded-2xl shadow-sm border p-4 ${className || "bg-white"}`}>
