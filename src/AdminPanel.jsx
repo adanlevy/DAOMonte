@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
 import { Upload, UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, Shield, Pause, Play } from "lucide-react";
 import { toast } from "react-toastify";
-import { startOfDay, endOfDay } from "date-fns";
 import RosterTable from "./RosterTable";
 
 // Función auxiliar para verificar si una función existe en el contrato
@@ -103,8 +102,8 @@ export default function AdminPanel() {
     if (!isAdmin) return toast.error("Solo admins pueden crear propuestas");
     const { title, description, groupId, startDate, endDate } = data;
     if (!groupId || !groups.find((g) => g.id === Number(groupId))) return toast.error("Grupo inválido");
-    const startSec = Math.floor(startOfDay(new Date(startDate)).getTime() / 1000);
-    const endSec = Math.floor(endOfDay(new Date(endDate)).getTime() / 1000);
+    const startSec = Math.floor(new Date(`${startDate}T00:00:00`).getTime() / 1000);
+    const endSec = Math.floor(new Date(`${endDate}T23:59:59`).getTime() / 1000);
     await run("createProposal", async () => {
       const hasCP2 = hasFn(contract, "createProposal2");
       const tx = await withGas(
