@@ -48,6 +48,7 @@ export default function AdminPanel() {
     setOpenMembersGroup,
     rosterIndex,
     registered,
+    account,
   } = useGroupDAO();
 
   const [adminOpen, setAdminOpen] = React.useState(false);
@@ -187,11 +188,11 @@ export default function AdminPanel() {
     });
   };
 
-  if (!isAdmin && !demo) return null;
+  if (!contract && !demo) return null;
 
   return (
     <>
-      {registered === false && contract && (
+      {contract && account && registered !== true && (
         <div className="mb-4 p-4 border rounded-xl bg-white shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Registro de Usuario</h3>
           <p className="text-sm text-gray-600 mb-4">Ingresa tus datos para asociarlos a tu billetera la primera vez.</p>
@@ -234,23 +235,24 @@ export default function AdminPanel() {
           </form>
         </div>
       )}
-      <Card
-        title={<div className="flex items-center gap-2"><Settings className="w-5 h-5"/> Administración</div>}
-        icon={<span />}
-        className="bg-indigo-50"
-        actions={
-          <button
-            onClick={() => setAdminOpen((v) => !v)}
-            className="text-sm border rounded-xl px-3 py-1 flex items-center gap-1"
-            aria-label={adminOpen ? "Ocultar panel de administración" : "Mostrar panel de administración"}
-          >
-            {adminOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-            {adminOpen ? "Ocultar" : "Mostrar"}
-          </button>
-        }
-      >
-        {adminOpen && (
-          <div className="grid gap-6">
+      {(isAdmin || demo) && (
+        <Card
+          title={<div className="flex items-center gap-2"><Settings className="w-5 h-5"/> Administración</div>}
+          icon={<span />}
+          className="bg-indigo-50"
+          actions={
+            <button
+              onClick={() => setAdminOpen((v) => !v)}
+              className="text-sm border rounded-xl px-3 py-1 flex items-center gap-1"
+              aria-label={adminOpen ? "Ocultar panel de administración" : "Mostrar panel de administración"}
+            >
+              {adminOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {adminOpen ? "Ocultar" : "Mostrar"}
+            </button>
+          }
+        >
+          {adminOpen && (
+            <div className="grid gap-6">
             {/* Gestión de administradores */}
             <div className="border rounded-xl p-3 bg-white">
               <div className="flex items-center gap-2 mb-2 text-sm font-medium">
@@ -537,6 +539,7 @@ export default function AdminPanel() {
           </div>
         )}
       </Card>
+      )}
     </>
   );
 }
