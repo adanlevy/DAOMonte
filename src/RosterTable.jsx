@@ -21,6 +21,7 @@ export default function RosterTable() {
     fetchAll,
     demoGroups,
     withGas, // Añadido del contexto
+    groupMembersCache,
     setGroupMembersCache,
   } = useGroupDAO();
 
@@ -57,10 +58,36 @@ export default function RosterTable() {
 
   const actionBulkAddToGroup = async (addrs, gid) => {
     if (demo) return toast.success("Demo: asignación simulada");
+
+    // Cargar miembros existentes para evitar duplicados
+    let existing = groupMembersCache[gid];
+    if (!existing) {
+      try {
+        const list = await (contract.getGroupMembersSlice
+          ? contract.getGroupMembersSlice(Number(gid), 0, 1000)
+          : contract.getGroupMembers(Number(gid)));
+        existing = list;
+        setGroupMembersCache((prev) => ({ ...prev, [gid]: list }));
+      } catch {
+        existing = [];
+      }
+    }
+    const existingSet = new Set((existing || []).map((a) => a.toLowerCase()));
+    const uniqueAddrs = addrs.filter((a) => !existingSet.has(a.toLowerCase()));
+    const skipped = addrs.length - uniqueAddrs.length;
+    if (!uniqueAddrs.length) {
+      toast.info("Todos los usuarios seleccionados ya están en el grupo");
+      return;
+    }
+    if (skipped)
+      toast.info(
+        `${skipped} persona${skipped > 1 ? "s" : ""} ya integraba el grupo y fue omitida`
+      );
+
     await run("bulkAdd", async () => {
       const tx = await withGas(
-        contract.addUsersToGroup.estimateGas(Number(gid), addrs),
-        (opts) => contract.addUsersToGroup(Number(gid), addrs, opts)
+        contract.addUsersToGroup.estimateGas(Number(gid), uniqueAddrs),
+        (opts) => contract.addUsersToGroup(Number(gid), uniqueAddrs, opts)
       );
       await tx.wait();
       setRosterSelection({});
