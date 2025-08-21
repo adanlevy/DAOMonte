@@ -1529,9 +1529,8 @@ export default function App() {
       const _contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
       setAccount(_acc);
       setContract(_contract);
-      await fetchAll(); // Ejecutar fetchAll tras conectar
     });
-  }, [ensureAmoy, fetchAll, run]);
+  }, [ensureAmoy, run]);
 
   const disconnect = useCallback(() => {
     run('disconnect', async () => {
@@ -1578,6 +1577,12 @@ export default function App() {
       window.ethereum.removeListener("chainChanged", onChain);
     };
   }, [connect, disconnect, ensureAmoy]);
+
+  // Obtener datos completos al establecer cuenta y contrato
+  useEffect(() => {
+    if (!contract || !account || demo) return;
+    fetchAll();
+  }, [contract, account, demo, fetchAll]);
 
   // Verificar si es owner tras conectar
   useEffect(() => {
