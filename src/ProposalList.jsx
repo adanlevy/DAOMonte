@@ -47,7 +47,7 @@ export default function ProposalList() {
   const myProposals = useMemo(() => {
     const m = new Map();
     for (const p of proposals) if (myGroupIds.includes(p.groupId)) m.set(p.id, p);
-    return Array.from(m.values());
+    return Array.from(m.values()).sort((a, b) => b.id - a.id);
   }, [proposals, myGroupIds]);
 
   const activeProposals = useMemo(() => {
@@ -156,31 +156,57 @@ export default function ProposalList() {
               </details>
               <div className="flex flex-wrap items-center gap-3 mt-3">
                 <button
-                  className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${nowSec() > p.endTime ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-700"}`}
+                  className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
+                    p.myVote === 1
+                      ? "bg-green-600 text-white cursor-default"
+                      : nowSec() > p.endTime || p.myVote !== 0
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-green-600 text-white hover:bg-green-700"
+                  }`}
                   onClick={() => actionVote(p.id, 1)}
-                  disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`)}
+                  disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
                   aria-label="Votar a favor"
                 >
                   <ThumbsUp className="w-5 h-5" /> A favor
                 </button>
                 <button
-                  className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${nowSec() > p.endTime ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-red-600 text-white hover:bg-red-700"}`}
+                  className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
+                    p.myVote === 2
+                      ? "bg-red-600 text-white cursor-default"
+                      : nowSec() > p.endTime || p.myVote !== 0
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-red-600 text-white hover:bg-red-700"
+                  }`}
                   onClick={() => actionVote(p.id, 2)}
-                  disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`)}
+                  disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
                   aria-label="Votar en contra"
                 >
                   <ThumbsDown className="w-5 h-5" /> En contra
                 </button>
                 {p.myVote !== 0 && (
-                  <button
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
-                    onClick={() => actionRetractVote(p.id)}
-                    disabled={isBusy(`retract:${p.id}`)}
-                    aria-label="Retractar voto"
-                  >
-                    {isBusy(`retract:${p.id}`) && <Loader2 className="w-4 h-4 animate-spin" />}
-                    Retractar
-                  </button>
+                  <>
+                    <span
+                      className={`text-sm flex items-center gap-1 ${
+                        p.myVote === 1 ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
+                      {p.myVote === 1 ? (
+                        <ThumbsUp className="w-4 h-4" />
+                      ) : (
+                        <ThumbsDown className="w-4 h-4" />
+                      )}
+                      Votaste {p.myVote === 1 ? "a favor" : "en contra"}
+                    </span>
+                    <button
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                      onClick={() => actionRetractVote(p.id)}
+                      disabled={isBusy(`retract:${p.id}`)}
+                      aria-label="Retractar voto"
+                    >
+                      {isBusy(`retract:${p.id}`) && <Loader2 className="w-4 h-4 animate-spin" />}
+                      Retractar
+                    </button>
+                  </>
                 )}
               </div>
               <button
