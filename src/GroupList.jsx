@@ -1,5 +1,5 @@
 import React from "react";
-import { useGroupDAO } from "./App";
+import { useGroupDAO } from "./GroupDAOContext";
 import { Users, ChevronDown, ChevronRight, Loader2, Eye } from "lucide-react";
 import { toast } from "react-toastify";
 

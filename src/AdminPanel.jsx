@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGroupDAO } from "./App";
+import { useGroupDAO } from "./GroupDAOContext";
 import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
 import { Upload, UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, Shield, Pause, Play } from "lucide-react";
