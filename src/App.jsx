@@ -1361,7 +1361,13 @@ export default function App() {
 
   const rosterIndex = useMemo(() => {
     const m = new Map();
-    for (const r of roster) if (r.address) m.set(r.address.toLowerCase(), { name: r.name || r.nombre || "", dni: r.dni || r.DNI || "" });
+    for (const r of roster) if (r.address) {
+      m.set(r.address.toLowerCase(), {
+        name: r.name || r.nombre || "",
+        surname: r.surname || r.apellido || "",
+        dni: r.dni || r.DNI || ""
+      });
+    }
     return m;
   }, [roster]);
 
@@ -1627,13 +1633,23 @@ export default function App() {
     (csvRows || []).forEach(r => {
       const addr = (r.address || r.wallet || "").trim().toLowerCase();
       if (!addr || !ethers.isAddress(addr)) return;
-      mapCSV.set(addr, { name: r.name || r.nombre || "", dni: r.dni || r.DNI || "", address: addr });
+      mapCSV.set(addr, {
+        name: r.name || r.nombre || "",
+        surname: r.surname || r.apellido || "",
+        dni: r.dni || r.DNI || "",
+        address: addr
+      });
     });
 
     const rows = [];
     (baseAddrList || []).forEach(addr => {
       const found = mapCSV.get(addr.toLowerCase());
-      rows.push({ address: addr, name: found?.name || "", dni: found?.dni || "" });
+      rows.push({
+        address: addr,
+        name: found?.name || "",
+        surname: found?.surname || "",
+        dni: found?.dni || ""
+      });
     });
 
     setRoster(rows.sort((a, b) => (a.name || "").localeCompare(b.name || "")));
@@ -1651,6 +1667,7 @@ export default function App() {
       complete: (res) => {
         const rows = (res.data || []).map(r => ({
           name: r.name || r.nombre || "",
+          surname: r.surname || r.apellido || "",
           dni: r.dni || r.DNI || "",
           address: (r.address || r.wallet || "").trim()
         }));
