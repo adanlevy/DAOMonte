@@ -191,7 +191,7 @@ export default function AdminPanel() {
 
   return (
     <>
-      {!registered && contract && (
+      {registered === false && contract && (
         <div className="mb-4 p-4 border rounded-xl bg-white shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Registro de Usuario</h3>
           <p className="text-sm text-gray-600 mb-4">Ingresa tus datos para asociarlos a tu billetera la primera vez.</p>
