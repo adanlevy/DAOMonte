@@ -184,16 +184,8 @@ export default function ProposalList() {
             />
           </div>
           {(demo ? demoProposals : activeProposals).map(p => (
-            <div key={p.id} className={`border rounded-xl p-3 ${nowSec() > p.endTime ? "bg-gray-50 border-gray-200" : "bg-white"}`}>
-              <details>
-                <summary className="cursor-pointer select-none flex items-start justify-between gap-2">
-                  <div className="font-semibold text-base leading-tight">#{p.id} · {p.title || p.text}</div>
-                </summary>
-                <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
-                {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
-              </details>
-              <div className="mt-1 flex flex-wrap items-center gap-1">
-                <span className="text-xs font-medium text-gray-500 mr-1">Grupo(s):</span>
+            <div key={p.id} className={`relative border rounded-xl p-3 ${nowSec() > p.endTime ? "bg-gray-50 border-gray-200" : "bg-white"}`}>
+              <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
                   return (
@@ -206,13 +198,20 @@ export default function ProposalList() {
                   );
                 })}
               </div>
+              <details>
+                <summary className="cursor-pointer select-none flex items-start justify-between gap-2">
+                  <div className="font-semibold text-base leading-tight">#{p.id} · {p.title || p.text}</div>
+                </summary>
+                <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
+                {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
+              </details>
               <div className="flex flex-wrap items-center gap-3 mt-3">
                 <button
                   className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
                     nowSec() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`)
                       ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                       : "bg-green-600 text-white hover:bg-green-700"
-                  }`}
+                }`}
                   onClick={() => actionVote(p, 1)}
                   disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
                   aria-label="Votar a favor"
@@ -293,16 +292,8 @@ export default function ProposalList() {
             />
           </div>
           {(demo ? demoProposals : closedProposals).map(p => (
-            <div key={p.id} className="border rounded-xl p-3 bg-gray-50 border-gray-200">
-              <details>
-                <summary className="cursor-pointer select-none flex items-start justify-between gap-2">
-                  <div className="font-semibold text-base leading-tight">#{p.id} · {p.title || p.text}</div>
-                </summary>
-                <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
-                {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
-              </details>
-              <div className="mt-1 flex flex-wrap items-center gap-1">
-                <span className="text-xs font-medium text-gray-500 mr-1">Grupo(s):</span>
+            <div key={p.id} className="relative border rounded-xl p-3 bg-gray-50 border-gray-200">
+              <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
                   return (
@@ -315,6 +306,13 @@ export default function ProposalList() {
                   );
                 })}
               </div>
+              <details>
+                <summary className="cursor-pointer select-none flex items-start justify-between gap-2">
+                  <div className="font-semibold text-base leading-tight">#{p.id} · {p.title || p.text}</div>
+                </summary>
+                <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
+                {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
+              </details>
               <div className="mt-3 flex items-center justify-end gap-4 text-sm">
                 <div className="inline-flex items-center gap-1 text-gray-800">
                   <ThumbsUp className="w-4 h-4 text-yellow-500" />
