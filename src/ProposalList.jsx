@@ -28,6 +28,8 @@ export default function ProposalList() {
     demo,
     myGroupIds,
     proposals,
+    groups,
+    demoGroups,
     groupMembersCache,
     setGroupMembersCache,
     run,
@@ -46,7 +48,10 @@ export default function ProposalList() {
 
   const myProposals = useMemo(() => {
     const m = new Map();
-    for (const p of proposals) if (myGroupIds.includes(p.groupId)) m.set(p.id, p);
+    for (const p of proposals) {
+      const ids = p.groupIds || [p.groupId];
+      if (ids.some(id => myGroupIds.includes(id))) m.set(p.id, p);
+    }
     return Array.from(m.values()).sort((a, b) => b.id - a.id);
   }, [proposals, myGroupIds]);
 
@@ -187,6 +192,16 @@ export default function ProposalList() {
                 <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
                 {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
               </details>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {(p.groupIds || [p.groupId]).map(gid => {
+                  const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
+                  return (
+                    <span key={gid} className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-700">
+                      {g.id} – {g.name}
+                    </span>
+                  );
+                })}
+              </div>
               <div className="flex flex-wrap items-center gap-3 mt-3">
                 <button
                   className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
@@ -282,6 +297,16 @@ export default function ProposalList() {
                 <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
                 {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
               </details>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {(p.groupIds || [p.groupId]).map(gid => {
+                  const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
+                  return (
+                    <span key={gid} className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-700">
+                      {g.id} – {g.name}
+                    </span>
+                  );
+                })}
+              </div>
               <div className="mt-3 flex items-center justify-end gap-4 text-sm">
                 <div className="inline-flex items-center gap-1 text-gray-800">
                   <ThumbsUp className="w-4 h-4 text-yellow-500" />

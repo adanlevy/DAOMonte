@@ -1376,8 +1376,34 @@ export default function App() {
     { id: 2, name: "Comisión Directiva", active: true, memberCount: 5 }
   ];
   const demoProposals = [
-    { id: 1, title: "Aprobar presupuesto 2025", description: "Detalle lorem ipsum.", groupId: 2, startTime: nowSec() - 3600, endTime: nowSec() + 7200, creator: "0xAdmin", upCount: 3, downCount: 1, noVotaron: 2, myVote: 0 },
-    { id: 2, title: "Cambiar reglamento", description: "Texto más largo…", groupId: 1, startTime: nowSec() - 10000, endTime: nowSec() - 5000, creator: "0xAdmin", upCount: 10, downCount: 12, noVotaron: 0, myVote: 0 }
+    {
+      id: 1,
+      title: "Aprobar presupuesto 2025",
+      description: "Detalle lorem ipsum.",
+      groupId: 2,
+      groupIds: [2],
+      startTime: nowSec() - 3600,
+      endTime: nowSec() + 7200,
+      creator: "0xAdmin",
+      upCount: 3,
+      downCount: 1,
+      noVotaron: 2,
+      myVote: 0
+    },
+    {
+      id: 2,
+      title: "Cambiar reglamento",
+      description: "Texto más largo…",
+      groupId: 1,
+      groupIds: [1],
+      startTime: nowSec() - 10000,
+      endTime: nowSec() - 5000,
+      creator: "0xAdmin",
+      upCount: 10,
+      downCount: 12,
+      noVotaron: 0,
+      myVote: 0
+    }
   ];
 
   // ------------------ Web3 Helpers ------------------
@@ -1499,6 +1525,7 @@ export default function App() {
             title,
             description,
             groupId,
+            groupIds: [groupId],
             startTime: start,
             endTime: end,
             creator,
