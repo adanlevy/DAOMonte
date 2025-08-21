@@ -89,7 +89,37 @@ export default function ProposalList() {
     }
   };
 
-  const actionVote = async (pid, choice) => {
+  const refreshBreakdown = async (p) => {
+    const pid = p.id;
+    if (!breakdownOpen[pid] || demo) return;
+    setBreakdownLoading((s) => ({ ...s, [pid]: true }));
+    try {
+      let members = groupMembersCache[p.groupId];
+      if (!members) {
+        const list = await (contract.getGroupMembersSlice
+          ? contract.getGroupMembersSlice(p.groupId, 0, 2000)
+          : contract.getGroupMembers(p.groupId));
+        members = list;
+        setGroupMembersCache(prev => ({ ...prev, [p.groupId]: list }));
+      }
+      const up = [], down = [], none = [];
+      for (const addr of members) {
+        let v = 0;
+        try { v = Number(await contract.getUserVote(p.id, addr)); } catch {
+          // intentionally ignore errors
+        }
+        if (v === 1) up.push(addr);
+        else if (v === 2) down.push(addr);
+        else none.push(addr);
+      }
+      setBreakdownData((s) => ({ ...s, [pid]: { up, down, none } }));
+    } finally {
+      setBreakdownLoading((s) => ({ ...s, [pid]: false }));
+    }
+  };
+
+  const actionVote = async (p, choice) => {
+    const pid = p.id;
     if (demo) return toast.success(`Demo: votaste ${choice === 1 ? "👍" : "👎"}`);
     await run(`vote:${pid}`, async () => {
       const tx = await withGas(
@@ -98,11 +128,13 @@ export default function ProposalList() {
       );
       await tx.wait();
       await fetchAll();
+      await refreshBreakdown(p);
     });
   };
 
 
-  const actionRetractVote = async (pid) => {
+  const actionRetractVote = async (p) => {
+    const pid = p.id;
     if (demo) return toast.success("Demo: retractaste tu voto");
     await run(`retract:${pid}`, async () => {
       let tx;
@@ -119,6 +151,7 @@ export default function ProposalList() {
       }
       await tx.wait();
       await fetchAll();
+      await refreshBreakdown(p);
     });
   };
 
@@ -161,7 +194,7 @@ export default function ProposalList() {
                       ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                       : "bg-green-600 text-white hover:bg-green-700"
                   }`}
-                  onClick={() => actionVote(p.id, 1)}
+                  onClick={() => actionVote(p, 1)}
                   disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
                   aria-label="Votar a favor"
                 >
@@ -173,7 +206,7 @@ export default function ProposalList() {
                       ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                       : "bg-red-600 text-white hover:bg-red-700"
                   }`}
-                  onClick={() => actionVote(p.id, 2)}
+                  onClick={() => actionVote(p, 2)}
                   disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
                   aria-label="Votar en contra"
                 >
@@ -195,7 +228,7 @@ export default function ProposalList() {
                     </span>
                     <button
                       className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
-                      onClick={() => actionRetractVote(p.id)}
+                      onClick={() => actionRetractVote(p)}
                       disabled={isBusy(`retract:${p.id}`)}
                       aria-label="Retractar voto"
                     >
