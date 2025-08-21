@@ -192,11 +192,15 @@ export default function ProposalList() {
                 <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
                 {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
               </details>
-              <div className="mt-1 flex flex-wrap gap-1">
+              <div className="mt-1 flex flex-wrap items-center gap-1">
+                <span className="text-xs font-medium text-gray-500 mr-1">Grupo(s):</span>
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
                   return (
-                    <span key={gid} className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-700">
+                    <span
+                      key={gid}
+                      className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
+                    >
                       {g.id} – {g.name}
                     </span>
                   );
@@ -297,11 +301,15 @@ export default function ProposalList() {
                 <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
                 {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
               </details>
-              <div className="mt-1 flex flex-wrap gap-1">
+              <div className="mt-1 flex flex-wrap items-center gap-1">
+                <span className="text-xs font-medium text-gray-500 mr-1">Grupo(s):</span>
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
                   return (
-                    <span key={gid} className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-700">
+                    <span
+                      key={gid}
+                      className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
+                    >
                       {g.id} – {g.name}
                     </span>
                   );
