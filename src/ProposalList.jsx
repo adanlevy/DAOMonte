@@ -296,26 +296,6 @@ export default function ProposalList() {
                   <span className="text-gray-600">{p.noVotaron}</span>
                 </div>
               </div>
-              <button
-                className="text-xs text-gray-500 mt-2"
-                onClick={() => loadBreakdown(p)}
-                aria-label={`Toggle detalles de votación ${p.title}`}
-              >
-                {breakdownOpen[p.id] ? "Ocultar detalles" : "Ver detalles"}
-              </button>
-              {breakdownOpen[p.id] && (
-                <div className="mt-2 text-xs">
-                  {breakdownLoading[p.id] ? (
-                    <div className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Cargando detalles…</div>
-                  ) : (
-                    <div>
-                      <div>A favor: {breakdownData[p.id]?.up?.length || 0}</div>
-                      <div>En contra: {breakdownData[p.id]?.down?.length || 0}</div>
-                      <div>Sin votar: {breakdownData[p.id]?.none?.length || 0}</div>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           ))}
         </div>
