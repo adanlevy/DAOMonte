@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useGroupDAO } from "./App";
+import { useGroupDAO } from "./GroupDAOContext";
 import { ListFilter, Loader2 } from "lucide-react";
 import { toast } from "react-toastify"; // Importar toast
 
