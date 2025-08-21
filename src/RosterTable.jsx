@@ -48,6 +48,7 @@ export default function RosterTable() {
   const filteredRoster = useMemo(() => {
     return roster.filter((r) =>
       (r.name || r.nombre || "").toLowerCase().includes(rosterFilter.toLowerCase()) ||
+      (r.surname || r.apellido || "").toLowerCase().includes(rosterFilter.toLowerCase()) ||
       (r.dni || r.DNI || "").toLowerCase().includes(rosterFilter.toLowerCase()) ||
       (r.address || "").toLowerCase().includes(rosterFilter.toLowerCase())
     );
@@ -61,7 +62,7 @@ export default function RosterTable() {
           <ListFilter className="w-4 h-4" />
           <input
             className="border rounded-xl p-2 w-full"
-            placeholder="Filtrar por nombre, DNI o address…"
+            placeholder="Filtrar por nombre, apellido, DNI o address…"
             value={rosterFilter}
             onChange={(e) => setRosterFilter(e.target.value)}
             aria-label="Filtrar roster"
@@ -102,6 +103,7 @@ export default function RosterTable() {
             <tr>
               <th className="p-2 text-left">✓</th>
               <th className="p-2 text-left">Nombre</th>
+              <th className="p-2 text-left">Apellido</th>
               <th className="p-2 text-left">DNI</th>
               <th className="p-2 text-left">Address</th>
             </tr>
@@ -120,13 +122,14 @@ export default function RosterTable() {
                   />
                 </td>
                 <td className="p-2">{r.name || r.nombre || ""}</td>
+                <td className="p-2">{r.surname || r.apellido || ""}</td>
                 <td className="p-2">{r.dni || r.DNI || ""}</td>
                 <td className="p-2 font-mono">{r.address}</td>
               </tr>
             ))}
             {!filteredRoster.length && (
               <tr>
-                <td colSpan={4} className="p-3 text-center text-gray-500">
+                <td colSpan={5} className="p-3 text-center text-gray-500">
                   Sin datos. Cargá un CSV/URL o asegurate de tener grupos con integrantes.
                 </td>
               </tr>
