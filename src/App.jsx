@@ -1684,8 +1684,8 @@ export default function App() {
     if (demo) return toast.success("Demo: usuario registrado");
     if (!contract || !account) return toast.error("Conectá tu wallet");
     const fullName = `${name} ${surname}`.trim();
-    const dniHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(dni));
-    const nameHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(fullName));
+    const dniHash = ethers.keccak256(ethers.toUtf8Bytes(dni));
+    const nameHash = ethers.keccak256(ethers.toUtf8Bytes(fullName));
     await run('registerUser', async () => {
       const tx = await withGas(
         contract.registerUser.estimateGas(dniHash, nameHash),
