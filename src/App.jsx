@@ -1322,7 +1322,7 @@ export default function App() {
   const [contract, setContract] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const [registered, setRegistered] = useState(false);
+  const [registered, setRegistered] = useState(null);
   const [error, setError] = useState("");
   const [demo, setDemo] = useState(false);
   const [busy, setBusy] = useState({});
@@ -1539,7 +1539,7 @@ export default function App() {
       setContract(null);
       setIsAdmin(false);
       setIsOwner(false);
-      setRegistered(false);
+      setRegistered(null);
       setGroups([]);
       setMyGroupIds([]);
       setProposals([]);
