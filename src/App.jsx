@@ -1598,21 +1598,6 @@ export default function App() {
     });
   }, [contract, fetchAll, run]);
 
-  // Cargar CSV remoto
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      if (!rosterURL) return;
-      try {
-        await parseRemoteCSV(rosterURL);
-        if (!cancelled) { /* merge en otro efecto */ }
-      } catch {
-        toast.error("Error al cargar CSV remoto");
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [rosterURL, parseRemoteCSV]);
-
   // Escuchar eventos
   useEffect(() => {
     if (!contract) return;
@@ -1678,6 +1663,21 @@ export default function App() {
     localStorage.removeItem('groupdao.rosterURL');
     recomputeRoster(baseAddresses, []);
   }, [baseAddresses, recomputeRoster]);
+
+  // Cargar CSV remoto
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!rosterURL) return;
+      try {
+        await parseRemoteCSV(rosterURL);
+        if (!cancelled) { /* merge en otro efecto */ }
+      } catch {
+        toast.error("Error al cargar CSV remoto");
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [rosterURL, parseRemoteCSV]);
 
   // ------------------ Nueva Función: registerUser ------------------
   const registerUser = useCallback(async (name, surname, dni) => {
