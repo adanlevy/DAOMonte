@@ -44,6 +44,11 @@ export default function AdminPanel() {
     clearRosterAssociation,
     roster, // Añadido para verificar si el usuario está en el roster
     registerUser,
+    groupMembersCache,
+    setGroupMembersCache,
+    openMembersGroup,
+    setOpenMembersGroup,
+    rosterIndex,
   } = useGroupDAO();
 
   const [adminOpen, setAdminOpen] = React.useState(false);
@@ -92,12 +97,16 @@ export default function AdminPanel() {
   const onRegisterUser = async (data) => {
     await registerUser(data.name, data.surname, data.dni);
     resetUser();
+    setIsUserRegistered(true);
   };
 
   const onCreateGroup = async (data) => {
     if (demo) return toast.success("Demo: grupo creado");
     await run("createGroup", async () => {
-      const tx = await contract.createGroup(data.name);
+      const tx = await withGas(
+        contract.createGroup.estimateGas(data.name),
+        (opts) => contract.createGroup(data.name, opts)
+      );
       await tx.wait();
       resetGroup();
       await fetchAll();
@@ -127,6 +136,30 @@ export default function AdminPanel() {
       resetProposal();
       await fetchAll();
     });
+  };
+
+  const toggleMembers = async (groupId) => {
+    if (openMembersGroup === groupId) {
+      setOpenMembersGroup(null);
+      return;
+    }
+    setOpenMembersGroup(groupId);
+    if (demo || groupMembersCache[groupId]) return;
+    try {
+      const list = await (contract.getGroupMembersSlice
+        ? contract.getGroupMembersSlice(groupId, 0, 1000)
+        : contract.getGroupMembers(groupId));
+      setGroupMembersCache((prev) => ({ ...prev, [groupId]: list }));
+    } catch {
+      toast.error("Error al cargar integrantes");
+    }
+  };
+
+  const displayAlias = (addr) => {
+    const a = (addr || "").toLowerCase();
+    const meta = rosterIndex.get(a);
+    if (meta && (meta.name || meta.dni)) return `${meta.name || ""}${meta.dni ? ` (DNI ${meta.dni})` : ""} – ${addr}`;
+    return addr;
   };
 
   const onAddAdmin = async () => {
@@ -332,6 +365,52 @@ export default function AdminPanel() {
                 </button>
                 <div className="text-sm text-gray-500">Total grupos: {demo ? demoGroups.length : groups.length}</div>
               </form>
+            </div>
+
+            {/* Listado de grupos */}
+            <div className="border rounded-xl p-3 bg-white">
+              <div className="flex items-center gap-2 mb-2 text-sm font-medium">
+                <Users className="w-4 h-4" /> Grupos existentes
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {(demo ? demoGroups.map((g) => g.id) : groups.map((g) => g.id)).map((id) => {
+                  const g = (demo ? demoGroups : groups).find((x) => x.id === id) || { name: `Grupo ${id}`, memberCount: 0 };
+                  const open = openMembersGroup === id;
+                  return (
+                    <div key={id}>
+                      <button
+                        onClick={() => toggleMembers(id)}
+                        className={`mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 ${open ? "bg-gray-100" : "bg-white"}`}
+                        aria-label={`Toggle miembros del grupo ${g.name}`}
+                      >
+                        {open ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+                        {id} – {g.name}
+                      </button>
+                      {open && (
+                        <div className="mt-1 mb-3 ml-2 p-2 border rounded-xl bg-gray-50 max-h-40 overflow-auto text-xs">
+                          <div className="mb-1 text-gray-600">
+                            Integrantes ({demo ? (demoGroups.find((x) => x.id === id)?.memberCount || 0) : (groupMembersCache[id]?.length ?? g.memberCount)}):
+                          </div>
+                          <ul className="font-mono space-y-1">
+                            {(demo
+                              ? Array.from({ length: (demoGroups.find((x) => x.id === id)?.memberCount || 0) }).map((_, i) => `0xDEMO${i.toString().padStart(2, "0")}`)
+                              : (groupMembersCache[id] || [])
+                            ).map((addr, i) => (
+                              <li key={i}>{displayAlias(addr)}</li>
+                            ))}
+                            {!demo && !groupMembersCache[id] && (
+                              <div className="text-gray-500 flex items-center gap-2">
+                                <Loader2 className="w-3 h-3 animate-spin" /> Cargando integrantes…
+                              </div>
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                {(!demo && groups.length === 0) && <div className="text-sm text-gray-500">No hay grupos creados.</div>}
+              </div>
             </div>
 
             {/* Creación de propuesta */}
