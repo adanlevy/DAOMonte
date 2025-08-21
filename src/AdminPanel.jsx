@@ -48,8 +48,24 @@ export default function AdminPanel() {
   const [adminOpen, setAdminOpen] = React.useState(false);
   const [adminAddr, setAdminAddr] = React.useState("");
   const [isUserRegistered, setIsUserRegistered] = useState(false); // Estado para rastrear registro del usuario
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const { register: groupForm, handleSubmit: handleGroupSubmit, reset: resetGroup } = useForm();
+  const {
+    register: userForm,
+    handleSubmit: handleUserSubmit,
+    reset: resetUser,
+    formState: { errors: userErrors },
+  } = useForm();
+  const {
+    register: groupForm,
+    handleSubmit: handleGroupSubmit,
+    reset: resetGroup,
+    formState: { errors: groupErrors },
+  } = useForm();
+  const {
+    register: proposalForm,
+    handleSubmit: handleProposalSubmit,
+    reset: resetProposal,
+    formState: { errors: proposalErrors },
+  } = useForm();
 
   // Efecto para forzar la actualización de isAdmin al conectar la billetera
   useEffect(() => {
@@ -79,6 +95,7 @@ export default function AdminPanel() {
       setIsUserRegistered(true);
       await fetchAll();
       toast.success("Usuario registrado exitosamente");
+      resetUser();
     });
   };
 
@@ -112,7 +129,7 @@ export default function AdminPanel() {
             : contract.createProposal(`${title}||${description}`, Number(groupId), startSec, endSec, opts)
       );
       await tx.wait();
-      reset();
+      resetProposal();
       await fetchAll();
     });
   };
@@ -167,33 +184,33 @@ export default function AdminPanel() {
         <div className="mb-4 p-4 border rounded-xl bg-white shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Registro de Usuario</h3>
           <p className="text-sm text-gray-600 mb-4">Ingresa tus datos para asociarlos a tu billetera la primera vez.</p>
-          <form onSubmit={handleSubmit(onRegisterUser)} className="grid gap-3">
+          <form onSubmit={handleUserSubmit(onRegisterUser)} className="grid gap-3">
             <div>
               <input
                 className="border rounded-xl p-2 w-full"
                 placeholder="Nombre"
-                {...register("name", { required: "Nombre requerido" })}
+                {...userForm("name", { required: "Nombre requerido" })}
                 aria-label="Nombre"
               />
-              {errors.name && <span className="text-xs text-red-600">{errors.name.message}</span>}
+              {userErrors.name && <span className="text-xs text-red-600">{userErrors.name.message}</span>}
             </div>
             <div>
               <input
                 className="border rounded-xl p-2 w-full"
                 placeholder="Apellido"
-                {...register("surname", { required: "Apellido requerido" })}
+                {...userForm("surname", { required: "Apellido requerido" })}
                 aria-label="Apellido"
               />
-              {errors.surname && <span className="text-xs text-red-600">{errors.surname.message}</span>}
+              {userErrors.surname && <span className="text-xs text-red-600">{userErrors.surname.message}</span>}
             </div>
             <div>
               <input
                 className="border rounded-xl p-2 w-full"
                 placeholder="DNI"
-                {...register("dni", { required: "DNI requerido" })}
+                {...userForm("dni", { required: "DNI requerido" })}
                 aria-label="DNI"
               />
-              {errors.dni && <span className="text-xs text-red-600">{errors.dni.message}</span>}
+              {userErrors.dni && <span className="text-xs text-red-600">{userErrors.dni.message}</span>}
             </div>
             <button
               disabled={isBusy("registerUser")}
@@ -308,7 +325,7 @@ export default function AdminPanel() {
                     {...groupForm("name", { required: "Nombre requerido" })}
                     aria-label="Nombre del grupo"
                   />
-                  {errors.name && <span className="text-xs text-red-600">{errors.name.message}</span>}
+                  {groupErrors?.name && <span className="text-xs text-red-600">{groupErrors.name.message}</span>}
                 </div>
                 <button
                   disabled={isBusy("createGroup")}
@@ -327,22 +344,22 @@ export default function AdminPanel() {
               <div className="flex items-center gap-2 mb-2 text-sm font-medium">
                 <Shield className="w-4 h-4" /> Crear propuesta
               </div>
-              <form onSubmit={handleSubmit(onCreateProposal)} className="grid gap-3">
+              <form onSubmit={handleProposalSubmit(onCreateProposal)} className="grid gap-3">
                 <div className="grid md:grid-cols-2 gap-2">
                   <div>
                     <input
                       className="border rounded-xl p-2 w-full"
                       placeholder="Título de la propuesta"
-                      {...register("title", { required: "Título requerido" })}
+                      {...proposalForm("title", { required: "Título requerido" })}
                       aria-label="Título de la propuesta"
                     />
-                    {errors.title && <span className="text-xs text-red-600">{errors.title.message}</span>}
+                    {proposalErrors.title && <span className="text-xs text-red-600">{proposalErrors.title.message}</span>}
                   </div>
                   <div>
                     <input
                       className="border rounded-xl p-2 w-full"
                       placeholder="Descripción"
-                      {...register("description")}
+                      {...proposalForm("description")}
                       aria-label="Descripción de la propuesta"
                     />
                   </div>
@@ -350,7 +367,7 @@ export default function AdminPanel() {
                 <div className="grid md:grid-cols-3 gap-2">
                   <select
                     className="border rounded-xl p-2"
-                    {...register("groupId", { required: "Grupo requerido" })}
+                    {...proposalForm("groupId", { required: "Grupo requerido" })}
                     aria-label="Seleccionar grupo"
                   >
                     <option value="">Elegí grupo…</option>
@@ -365,20 +382,22 @@ export default function AdminPanel() {
                     <input
                       type="date"
                       className="border rounded-xl p-2 w-full"
-                      {...register("startDate", { required: "Fecha de inicio requerida" })}
+                      {...proposalForm("startDate", { required: "Fecha de inicio requerida" })}
                       aria-label="Fecha de inicio"
                     />
-                    {errors.startDate && <span className="text-xs text-red-600">{errors.startDate.message}</span>}
+                    {proposalErrors.startDate && (
+                      <span className="text-xs text-red-600">{proposalErrors.startDate.message}</span>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Hasta</label>
                     <input
                       type="date"
                       className="border rounded-xl p-2 w-full"
-                      {...register("endDate", { required: "Fecha de fin requerida" })}
+                      {...proposalForm("endDate", { required: "Fecha de fin requerida" })}
                       aria-label="Fecha de fin"
                     />
-                    {errors.endDate && <span className="text-xs text-red-600">{errors.endDate.message}</span>}
+                    {proposalErrors.endDate && <span className="text-xs text-red-600">{proposalErrors.endDate.message}</span>}
                   </div>
                 </div>
                 <button
