@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { ListFilter, Loader2, Check, X } from "lucide-react";
 import { ethers } from "ethers";
@@ -23,6 +23,37 @@ export default function RosterTable() {
     withGas, // Añadido del contexto
     setGroupMembersCache,
   } = useGroupDAO();
+
+  const [chainHashes, setChainHashes] = useState({});
+
+  useEffect(() => {
+    if (!contract) return;
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        roster.map(async (r) => {
+          const addr = r.address;
+          if (!addr) return [addr, ""];
+          try {
+            const [dniHash] = await contract.getUserHashes(addr);
+            return [addr.toLowerCase(), dniHash];
+          } catch {
+            return [addr.toLowerCase(), ""];
+          }
+        })
+      );
+      if (!cancelled) {
+        const map = {};
+        entries.forEach(([addr, h]) => {
+          if (addr) map[addr.toLowerCase()] = h;
+        });
+        setChainHashes(map);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [contract, roster]);
 
   const actionBulkAddToGroup = async (addrs, gid) => {
     if (demo) return toast.success("Demo: asignación simulada");
@@ -113,9 +144,9 @@ export default function RosterTable() {
           <tbody>
             {filteredRoster.map((r, idx) => {
               const dni = r.dni || r.DNI || "";
-              const expected = r.puesto || "";
+              const expected = chainHashes[r.address?.toLowerCase()] || "";
               const hash = dni ? ethers.keccak256(ethers.toUtf8Bytes(dni)) : "";
-              const ok = expected && hash === expected;
+              const ok = expected && hash.toLowerCase() === expected.toLowerCase();
               return (
                 <tr key={idx} className="border-t">
                   <td className="p-2">
