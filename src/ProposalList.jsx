@@ -246,7 +246,7 @@ export default function ProposalList() {
                       Votaste {p.myVote === 1 ? "a favor" : "en contra"}
                     </span>
                     <button
-                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                      className="rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition bg-blue-800 text-white hover:bg-blue-900 disabled:bg-blue-400 disabled:cursor-not-allowed"
                       onClick={() => actionRetractVote(p)}
                       disabled={isBusy(`retract:${p.id}`)}
                       aria-label="Retractar voto"
