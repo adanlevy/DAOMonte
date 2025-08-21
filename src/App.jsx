@@ -1387,6 +1387,139 @@ export default function App() {
     }
   }, []);
 
+  // ------------------ Acciones ------------------
+  const fetchAdmins = useCallback(async () => {
+    if (!contract) return;
+    try {
+      const list = await contract.getAdmins?.();
+      if (Array.isArray(list)) setAdmins(list);
+    } catch {
+      // silently ignore errors
+    }
+  }, [contract]);
+
+  const buildRegisteredBase = useCallback(async () => {
+    if (!contract) return [];
+    const addrsSet = new Set();
+
+    try {
+      const totalUsers = await contract.getRegisteredUsers(0, 1000);
+      totalUsers.forEach(addr => addr && addrsSet.add(addr.toLowerCase()));
+    } catch (e) {
+      console.warn("getRegisteredUsers falló, usando eventos", e);
+      try {
+        const f = contract.filters?.UserRegistered?.();
+        if (f) {
+          const evts = await contract.queryFilter(f, 0, "latest");
+          evts.forEach(e => {
+            const addr = e.args?.user;
+            if (addr) addrsSet.add(addr.toLowerCase());
+          });
+        }
+      } catch {
+        // Intentionally ignore errors here
+      }
+    }
+
+    if (addrsSet.size === 0 && !demo) {
+      toast.warn("No se encontraron usuarios registrados. Verifica el contrato o carga un CSV.");
+    }
+
+    return Array.from(addrsSet.values());
+  }, [contract, demo]);
+  
+  const fetchAll = useCallback(async () => {
+    if (!contract || !account || demo) return;
+    setLoadingAll(true);
+    setError("");
+    try {
+      setLoadingGroups(true);
+      const admin = await contract.isAdmin(account);
+      setIsAdmin(admin);
+      const reg = await contract.isRegistered(account);
+      setRegistered(reg);
+
+      const totalGroups = Number(await contract.groupCount());
+      if (totalGroups > 100) throw new Error("Demasiados grupos, usa paginación");
+      const g = [];
+      for (let id = 1; id <= totalGroups; id++) {
+        const core = await contract.getGroupCore(id);
+        g.push({ id, name: core[1], active: core[2], memberCount: Number(core[3]) });
+      }
+      setGroups(g);
+
+      const mg = await contract.getUserGroups(account);
+      setMyGroupIds(mg.map(Number));
+      await fetchAdmins();
+
+      setLoadingProposals(true);
+      const propList = [];
+      const totalP = Number(await contract.proposalCount());
+      if (totalP > 1000) throw new Error("Demasiadas propuestas, usa paginación");
+      const pids = await contract.getAllProposals(0, totalP);
+      for (const pid of pids.map(Number)) {
+        try {
+          let title = "", description = "";
+          let groupId, start, end, creator, up, down;
+          try {
+            const p2 = await contract.getProposalCore2(pid);
+            title = p2[1];
+            description = p2[2];
+            groupId = Number(p2[3]);
+            start = Number(p2[4]);
+            end = Number(p2[5]);
+            creator = p2[6];
+            up = Number(p2[7]);
+            down = Number(p2[8]);
+          } catch {
+            const p1 = await contract.getProposalCore(pid);
+            const text = p1[1] || "";
+            const split = text.split("||");
+            title = split[0] || text;
+            description = split.slice(1).join("||");
+            groupId = Number(p1[2]);
+            start = Number(p1[3]);
+            end = Number(p1[4]);
+            creator = p1[5];
+            up = Number(p1[6]);
+            down = Number(p1[7]);
+          }
+          let noV = 0;
+          try { const counts = await contract.getProposalCounts(pid); noV = Number(counts[2]); } catch { /* intentionally ignore errors */ }
+          let myVote = 0;
+          try { myVote = Number(await contract.getUserVote(pid, account)); } catch { /* intentionally ignore errors */ }
+          propList.push({
+            id: pid,
+            title,
+            description,
+            groupId,
+            startTime: start,
+            endTime: end,
+            creator,
+            upCount: up,
+            downCount: down,
+            noVotaron: noV,
+            myVote
+          });
+        } catch {
+          // Intentionally ignore errors here
+        }
+      }
+      setProposals(propList);
+
+      const list = await buildRegisteredBase();
+      setBaseAddresses(list);
+    } catch (e) {
+      toast.error(e.message || String(e));
+      setError(e.message || String(e));
+    } finally {
+      setLoadingGroups(false);
+      setLoadingProposals(false);
+      setLoadingAll(false);
+    }
+  }, [contract, account, demo, fetchAdmins, buildRegisteredBase]);
+
+
   const connect = useCallback(async () => {
     await run('connect', async () => {
       await ensureAmoy();
@@ -1499,47 +1632,6 @@ export default function App() {
     };
   }, [contract, fetchAll]);
 
-  // ------------------ Acciones ------------------
-  const fetchAdmins = useCallback(async () => {
-    if (!contract) return;
-    try {
-      const list = await contract.getAdmins?.();
-      if (Array.isArray(list)) setAdmins(list);
-    } catch {
-      // silently ignore errors
-    }
-  }, [contract]);
-
-  const buildRegisteredBase = useCallback(async () => {
-    if (!contract) return [];
-    const addrsSet = new Set();
-
-    try {
-      const totalUsers = await contract.getRegisteredUsers(0, 1000);
-      totalUsers.forEach(addr => addr && addrsSet.add(addr.toLowerCase()));
-    } catch (e) {
-      console.warn("getRegisteredUsers falló, usando eventos", e);
-      try {
-        const f = contract.filters?.UserRegistered?.();
-        if (f) {
-          const evts = await contract.queryFilter(f, 0, "latest");
-          evts.forEach(e => {
-            const addr = e.args?.user;
-            if (addr) addrsSet.add(addr.toLowerCase());
-          });
-        }
-      } catch {
-        // Intentionally ignore errors here
-      }
-    }
-
-    if (addrsSet.size === 0 && !demo) {
-      toast.warn("No se encontraron usuarios registrados. Verifica el contrato o carga un CSV.");
-    }
-
-    return Array.from(addrsSet.values());
-  }, [contract, demo]);
-
   const recomputeRoster = useCallback((baseAddrList, csvRows) => {
     const mapCSV = new Map();
     (csvRows || []).forEach(r => {
@@ -1586,97 +1678,6 @@ export default function App() {
     localStorage.removeItem('groupdao.rosterURL');
     recomputeRoster(baseAddresses, []);
   }, [baseAddresses, recomputeRoster]);
-
-  const fetchAll = useCallback(async () => {
-    if (!contract || !account || demo) return;
-    setLoadingAll(true);
-    setError("");
-    try {
-      setLoadingGroups(true);
-      const admin = await contract.isAdmin(account);
-      setIsAdmin(admin);
-      const reg = await contract.isRegistered(account);
-      setRegistered(reg);
-
-      const totalGroups = Number(await contract.groupCount());
-      if (totalGroups > 100) throw new Error("Demasiados grupos, usa paginación");
-      const g = [];
-      for (let id = 1; id <= totalGroups; id++) {
-        const core = await contract.getGroupCore(id);
-        g.push({ id, name: core[1], active: core[2], memberCount: Number(core[3]) });
-      }
-      setGroups(g);
-
-      const mg = await contract.getUserGroups(account);
-      setMyGroupIds(mg.map(Number));
-      await fetchAdmins();
-
-      setLoadingProposals(true);
-      const propList = [];
-      const totalP = Number(await contract.proposalCount());
-      if (totalP > 1000) throw new Error("Demasiadas propuestas, usa paginación");
-      const pids = await contract.getAllProposals(0, totalP);
-      for (const pid of pids.map(Number)) {
-        try {
-          let title = "", description = "";
-          let groupId, start, end, creator, up, down;
-          try {
-            const p2 = await contract.getProposalCore2(pid);
-            title = p2[1];
-            description = p2[2];
-            groupId = Number(p2[3]);
-            start = Number(p2[4]);
-            end = Number(p2[5]);
-            creator = p2[6];
-            up = Number(p2[7]);
-            down = Number(p2[8]);
-          } catch {
-            const p1 = await contract.getProposalCore(pid);
-            const text = p1[1] || "";
-            const split = text.split("||");
-            title = split[0] || text;
-            description = split.slice(1).join("||");
-            groupId = Number(p1[2]);
-            start = Number(p1[3]);
-            end = Number(p1[4]);
-            creator = p1[5];
-            up = Number(p1[6]);
-            down = Number(p1[7]);
-          }
-          let noV = 0;
-          try { const counts = await contract.getProposalCounts(pid); noV = Number(counts[2]); } catch { /* intentionally ignore errors */ }
-          let myVote = 0;
-          try { myVote = Number(await contract.getUserVote(pid, account)); } catch { /* intentionally ignore errors */ }
-          propList.push({
-            id: pid,
-            title,
-            description,
-            groupId,
-            startTime: start,
-            endTime: end,
-            creator,
-            upCount: up,
-            downCount: down,
-            noVotaron: noV,
-            myVote
-          });
-        } catch {
-          // Intentionally ignore errors here
-        }
-      }
-      setProposals(propList);
-
-      const list = await buildRegisteredBase();
-      setBaseAddresses(list);
-    } catch (e) {
-      toast.error(e.message || String(e));
-      setError(e.message || String(e));
-    } finally {
-      setLoadingGroups(false);
-      setLoadingProposals(false);
-      setLoadingAll(false);
-    }
-  }, [contract, account, demo, fetchAdmins, buildRegisteredBase]);
 
   // ------------------ Nueva Función: registerUser ------------------
   const registerUser = useCallback(async (name, surname, dni) => {
