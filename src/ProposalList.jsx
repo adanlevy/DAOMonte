@@ -157,11 +157,9 @@ export default function ProposalList() {
               <div className="flex flex-wrap items-center gap-3 mt-3">
                 <button
                   className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
-                    p.myVote === 1
-                      ? "bg-green-600 text-white cursor-default"
-                      : nowSec() > p.endTime || p.myVote !== 0
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-green-600 text-white hover:bg-green-700"
+                    nowSec() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`)
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-green-600 text-white hover:bg-green-700"
                   }`}
                   onClick={() => actionVote(p.id, 1)}
                   disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
@@ -171,11 +169,9 @@ export default function ProposalList() {
                 </button>
                 <button
                   className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
-                    p.myVote === 2
-                      ? "bg-red-600 text-white cursor-default"
-                      : nowSec() > p.endTime || p.myVote !== 0
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-red-600 text-white hover:bg-red-700"
+                    nowSec() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`)
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-red-600 text-white hover:bg-red-700"
                   }`}
                   onClick={() => actionVote(p.id, 2)}
                   disabled={nowSec() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0}
