@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
-import { Upload, UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, Shield, Pause, Play } from "lucide-react";
+import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, Shield, Pause, Play } from "lucide-react";
 import { toast } from "react-toastify";
 import RosterTable from "./RosterTable";
 
@@ -312,7 +312,11 @@ export default function AdminPanel() {
                   <button
                     disabled={isBusy("pause") || paused}
                     onClick={onPause}
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-red-50 hover:bg-red-100 disabled:opacity-50"
+                    className={`rounded-xl border px-3 py-2 text-sm flex items-center gap-2 ${
+                      isBusy("pause") || paused
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-red-50 hover:bg-red-100"
+                    }`}
                     aria-label="Pausar contrato"
                   >
                     {isBusy("pause") && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -321,11 +325,15 @@ export default function AdminPanel() {
                   <button
                     disabled={isBusy("unpause") || !paused}
                     onClick={onUnpause}
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-green-50 hover:bg-green-100 disabled:opacity-50"
-                    aria-label="Despausar contrato"
+                    className={`rounded-xl border px-3 py-2 text-sm flex items-center gap-2 ${
+                      isBusy("unpause") || !paused
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-green-50 hover:bg-green-100"
+                    }`}
+                    aria-label="Reanudar contrato"
                   >
                     {isBusy("unpause") && <Loader2 className="w-4 h-4 animate-spin" />}
-                    <Play className="w-4 h-4" /> Despausar
+                    <Play className="w-4 h-4" /> Reanudar
                   </button>
                 </div>
               </div>
@@ -482,18 +490,6 @@ export default function AdminPanel() {
                 <Users className="w-4 h-4" /> Gestión de roster
               </div>
               <div className="grid gap-3">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Upload className="w-4 h-4" />
-                  <span className="text-sm">
-                    Cargar padrón local (CSV: <code>name</code>, <code>dni</code>, <code>address</code>)
-                  </span>
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={(e) => e.target.files?.[0] && parseRemoteCSV(e.target.files[0])}
-                    aria-label="Cargar CSV local"
-                  />
-                </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <LinkIcon className="w-4 h-4" />
                   <input
