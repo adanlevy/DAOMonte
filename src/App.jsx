@@ -1322,6 +1322,7 @@ export default function App() {
   const [contract, setContract] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [registered, setRegistered] = useState(null);
   const [error, setError] = useState("");
   const [demo, setDemo] = useState(false);
@@ -1351,7 +1352,10 @@ export default function App() {
       await fn();
       toast.success(`Acción ${key} completada con éxito`);
     } catch (e) {
-      const msg = e?.shortMessage || e?.message || "Error en la acción";
+      let msg = e?.shortMessage || e?.message || "Error en la acción";
+      if (msg.toLowerCase().includes("paused")) {
+        msg = "El contrato está en pausa. Intenta nuevamente cuando esté activo.";
+      }
       toast.error(msg);
       setError(msg);
     } finally {
@@ -1470,6 +1474,8 @@ export default function App() {
       setIsAdmin(admin);
       const reg = await contract.isRegistered(account);
       setRegistered(reg);
+      const p = await contract.paused?.();
+      if (typeof p === "boolean") setPaused(p);
 
       const totalGroups = Number(await contract.groupCount());
       if (totalGroups > 100) throw new Error("Demasiados grupos, usa paginación");
@@ -1753,7 +1759,7 @@ export default function App() {
   // ------------------ Render ------------------
   return (
     <GroupDAOContext.Provider value={{
-      contract, account, isAdmin, isOwner, registered, demo, groups, myGroupIds, proposals,
+      contract, account, isAdmin, isOwner, paused, registered, demo, groups, myGroupIds, proposals,
       groupMembersCache, setGroupMembersCache, openMembersGroup, setOpenMembersGroup,
       admins, setAdmins, loadingGroups, loadingProposals, roster, rosterFilter, setRosterFilter,
       rosterSelection, setRosterSelection, targetGroupId, setTargetGroupId, rosterURL, setRosterURL,

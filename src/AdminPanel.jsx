@@ -29,6 +29,7 @@ export default function AdminPanel() {
     contract,
     isAdmin,
     isOwner,
+    paused,
     demo,
     groups,
     run,
@@ -301,21 +302,26 @@ export default function AdminPanel() {
               <div className="border rounded-xl p-3 bg-white">
                 <div className="flex items-center gap-2 mb-2 text-sm font-medium">
                   <Shield className="w-4 h-4" /> Control del contrato
+                  <span
+                    className={`ml-auto px-2 py-0.5 rounded-full text-xs ${paused ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}
+                  >
+                    {paused ? "Pausado" : "Activo"}
+                  </span>
                 </div>
                 <div className="flex gap-2">
                   <button
-                    disabled={isBusy("pause")}
+                    disabled={isBusy("pause") || paused}
                     onClick={onPause}
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-red-50 hover:bg-red-100"
+                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-red-50 hover:bg-red-100 disabled:opacity-50"
                     aria-label="Pausar contrato"
                   >
                     {isBusy("pause") && <Loader2 className="w-4 h-4 animate-spin" />}
                     <Pause className="w-4 h-4" /> Pausar
                   </button>
                   <button
-                    disabled={isBusy("unpause")}
+                    disabled={isBusy("unpause") || !paused}
                     onClick={onUnpause}
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-green-50 hover:bg-green-100"
+                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-green-50 hover:bg-green-100 disabled:opacity-50"
                     aria-label="Despausar contrato"
                   >
                     {isBusy("unpause") && <Loader2 className="w-4 h-4 animate-spin" />}
