@@ -191,6 +191,7 @@ export default function ProposalList() {
                   return (
                     <span
                       key={gid}
+                      title="Grupos que intervienen en esta votación"
                       className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
                     >
                       {g.id} – {g.name}
@@ -202,7 +203,7 @@ export default function ProposalList() {
                 <summary className="cursor-pointer select-none flex items-start justify-between gap-2">
                   <div className="font-semibold text-base leading-tight">#{p.id} · {p.title || p.text}</div>
                 </summary>
-                <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
+                <div className="mt-2 text-xs text-gray-500">Período para votación: {fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
                 {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
               </details>
               <div className="flex flex-wrap items-center gap-3 mt-3">
@@ -299,6 +300,7 @@ export default function ProposalList() {
                   return (
                     <span
                       key={gid}
+                      title="Grupos que intervienen en esta votación"
                       className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
                     >
                       {g.id} – {g.name}
@@ -310,7 +312,7 @@ export default function ProposalList() {
                 <summary className="cursor-pointer select-none flex items-start justify-between gap-2">
                   <div className="font-semibold text-base leading-tight">#{p.id} · {p.title || p.text}</div>
                 </summary>
-                <div className="mt-2 text-xs text-gray-500">{fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
+                <div className="mt-2 text-xs text-gray-500">Período para votación: {fmtDate(p.startTime)} → {fmtDate(p.endTime)}</div>
                 {p.description && <div className="mt-1 text-sm whitespace-pre-wrap">{p.description}</div>}
               </details>
               <div className="mt-3 flex items-center justify-end gap-4 text-sm">
