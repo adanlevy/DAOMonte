@@ -489,53 +489,57 @@ export default function AdminPanel() {
                 <Users className="w-4 h-4" /> Gestión de roster
               </div>
               <div className="grid gap-3">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <LinkIcon className="w-4 h-4" />
-                  <input
-                    className="border rounded-xl p-2 flex-1 min-w-[240px]"
-                    placeholder="URL CSV público"
-                    value={rosterURL}
-                    onChange={(e) => setRosterURL(e.target.value)}
-                    aria-label="URL del CSV público"
-                  />
-                  <button
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
-                    disabled={isBusy("loadRosterURL")}
-                    onClick={() =>
-                      run("loadRosterURL", async () => {
-                        if (rosterURL) await parseRemoteCSV(rosterURL);
-                      })
-                    }
-                    aria-label="Cargar CSV remoto"
-                  >
-                    {isBusy("loadRosterURL") && <Loader2 className="w-4 h-4 animate-spin" />} Cargar remoto
-                  </button>
-                  <button
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
-                    disabled={isBusy("saveRosterURL")}
-                    onClick={() =>
-                      run("saveRosterURL", async () => {
-                        const tx = await withGas(
-                          contract.setRosterURI.estimateGas(rosterURL),
-                          (opts) => contract.setRosterURI(rosterURL, opts)
-                        );
-                        await tx.wait();
-                        localStorage.setItem("groupdao.rosterURL", rosterURL);
-                        setRosterURL(rosterURL);
-                        if (rosterURL) await parseRemoteCSV(rosterURL);
-                      })
-                    }
-                    aria-label="Publicar URL para todos"
-                  >
-                    {isBusy("saveRosterURL") && <Loader2 className="w-4 h-4 animate-spin" />} Publicar URL
-                  </button>
-                  <button
-                    className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-white hover:bg-gray-50"
-                    onClick={clearRosterAssociation}
-                    aria-label="Limpiar padrón"
-                  >
-                    Limpiar padrón
-                  </button>
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                  <div className="flex items-center gap-2 flex-1 w-full">
+                    <LinkIcon className="w-4 h-4" />
+                    <input
+                      className="border rounded-xl p-2 flex-1 w-full"
+                      placeholder="URL CSV público"
+                      value={rosterURL}
+                      onChange={(e) => setRosterURL(e.target.value)}
+                      aria-label="URL del CSV público"
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                    <button
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                      disabled={isBusy("loadRosterURL")}
+                      onClick={() =>
+                        run("loadRosterURL", async () => {
+                          if (rosterURL) await parseRemoteCSV(rosterURL);
+                        })
+                      }
+                      aria-label="Cargar CSV remoto"
+                    >
+                      {isBusy("loadRosterURL") && <Loader2 className="w-4 h-4 animate-spin" />} Cargar remoto
+                    </button>
+                    <button
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                      disabled={isBusy("saveRosterURL")}
+                      onClick={() =>
+                        run("saveRosterURL", async () => {
+                          const tx = await withGas(
+                            contract.setRosterURI.estimateGas(rosterURL),
+                            (opts) => contract.setRosterURI(rosterURL, opts)
+                          );
+                          await tx.wait();
+                          localStorage.setItem("groupdao.rosterURL", rosterURL);
+                          setRosterURL(rosterURL);
+                          if (rosterURL) await parseRemoteCSV(rosterURL);
+                        })
+                      }
+                      aria-label="Publicar URL para todos"
+                    >
+                      {isBusy("saveRosterURL") && <Loader2 className="w-4 h-4 animate-spin" />} Publicar URL
+                    </button>
+                    <button
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-white hover:bg-gray-50"
+                      onClick={clearRosterAssociation}
+                      aria-label="Limpiar padrón"
+                    >
+                      Limpiar padrón
+                    </button>
+                  </div>
                 </div>
               </div>
               <RosterTable />
