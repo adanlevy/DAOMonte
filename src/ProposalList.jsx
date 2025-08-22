@@ -4,23 +4,11 @@ import { Shield, ThumbsUp, ThumbsDown, CircleSlash, Loader2 } from "lucide-react
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import Card from "./components/Card";
+import Skeleton from "./components/Skeleton";
 
 // Función nowSec definida localmente
 const nowSec = () => Math.floor(Date.now() / 1000);
-
-// Componente Card
-const Card = ({ title, icon, children, actions, className = "" }) => (
-  <div className={`rounded-2xl shadow-sm border p-4 ${className || "bg-white"}`}>
-    <div className="flex items-center justify-between mb-3">
-      <div className="flex items-center gap-2 font-semibold text-lg">
-        {icon}
-        <span>{title}</span>
-      </div>
-      {actions}
-    </div>
-    <div>{children}</div>
-  </div>
-);
 
 export default function ProposalList() {
   const {
@@ -183,7 +171,13 @@ export default function ProposalList() {
               aria-label="Filtrar votaciones en curso"
             />
           </div>
-          {(demo ? demoProposals : activeProposals).map(p => (
+          {loadingProposals ? (
+            <div className="space-y-2 mt-2">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+          ) : (
+          (demo ? demoProposals : activeProposals).map(p => (
             <div key={p.id} className={`relative border rounded-xl p-3 ${nowSec() > p.endTime ? "bg-gray-50 border-gray-200" : "bg-white"}`}>
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
@@ -278,7 +272,8 @@ export default function ProposalList() {
                 </div>
               )}
             </div>
-          ))}
+          ))
+          )}
         </div>
         <div>
           <div className="flex justify-between">
@@ -292,7 +287,13 @@ export default function ProposalList() {
               aria-label="Filtrar votaciones finalizadas"
             />
           </div>
-          {(demo ? demoProposals : closedProposals).map(p => (
+          {loadingProposals ? (
+            <div className="space-y-2 mt-2">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+          ) : (
+          (demo ? demoProposals : closedProposals).map(p => (
             <div key={p.id} className="relative border rounded-xl p-3 bg-gray-50 border-gray-200">
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
@@ -330,7 +331,8 @@ export default function ProposalList() {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+          )}
         </div>
       </div>
     </Card>

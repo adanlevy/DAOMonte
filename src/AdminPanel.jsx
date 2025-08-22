@@ -5,24 +5,12 @@ import { ethers } from "ethers";
 import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, Shield, Pause, Play } from "lucide-react";
 import { toast } from "react-toastify";
 import RosterTable from "./RosterTable";
+import Card from "./components/Card";
 
 // Función auxiliar para verificar si una función existe en el contrato
 const hasFn = (contract, fnName) => {
   return contract && contract[fnName] && typeof contract[fnName] === "function";
 };
-
-const Card = ({ title, icon, children, actions, className = "" }) => (
-  <div className={`rounded-2xl shadow-sm border p-4 ${className || "bg-white"}`}>
-    <div className="flex items-center justify-between mb-3">
-      <div className="flex items-center gap-2 font-semibold text-lg">
-        {icon}
-        <span>{title}</span>
-      </div>
-      {actions}
-    </div>
-    <div>{children}</div>
-  </div>
-);
 
 export default function AdminPanel() {
   const {
@@ -205,29 +193,32 @@ export default function AdminPanel() {
           <p className="text-sm text-gray-600 mb-4">Ingresa tus datos para asociarlos a tu billetera la primera vez.</p>
           <form onSubmit={handleUserSubmit(onRegisterUser)} className="grid gap-3">
             <div>
+              <label htmlFor="name" className="block text-sm font-medium mb-1">Nombre</label>
               <input
+                id="name"
                 className="border rounded-xl p-2 w-full"
                 placeholder="Nombre"
                 {...userForm("name", { required: "Nombre requerido" })}
-                aria-label="Nombre"
               />
               {userErrors.name && <span className="text-xs text-red-600">{userErrors.name.message}</span>}
             </div>
             <div>
+              <label htmlFor="surname" className="block text-sm font-medium mb-1">Apellido</label>
               <input
+                id="surname"
                 className="border rounded-xl p-2 w-full"
                 placeholder="Apellido"
                 {...userForm("surname", { required: "Apellido requerido" })}
-                aria-label="Apellido"
               />
               {userErrors.surname && <span className="text-xs text-red-600">{userErrors.surname.message}</span>}
             </div>
             <div>
+              <label htmlFor="dni" className="block text-sm font-medium mb-1">DNI</label>
               <input
+                id="dni"
                 className="border rounded-xl p-2 w-full"
                 placeholder="DNI"
                 {...userForm("dni", { required: "DNI requerido" })}
-                aria-label="DNI"
               />
               {userErrors.dni && <span className="text-xs text-red-600">{userErrors.dni.message}</span>}
             </div>
@@ -246,7 +237,7 @@ export default function AdminPanel() {
         <Card
           title={<div className="flex items-center gap-2"><Settings className="w-5 h-5"/> Administración</div>}
           icon={<span />}
-          className="bg-indigo-50"
+          className="bg-indigo-50 dark:bg-indigo-900"
           actions={
             <button
               onClick={() => setAdminOpen((v) => !v)}
@@ -266,12 +257,13 @@ export default function AdminPanel() {
                 <UserCog className="w-4 h-4" /> Gestión de administradores
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
+                <label htmlFor="adminAddr" className="sr-only">Dirección del administrador</label>
                 <input
+                  id="adminAddr"
                   className="border rounded-xl p-2 flex-1"
                   placeholder="0x… address"
                   value={adminAddr}
                   onChange={(e) => setAdminAddr(e.target.value)}
-                  aria-label="Dirección del administrador"
                 />
                 <button
                   disabled={isBusy("addAdmin")}
@@ -352,11 +344,12 @@ export default function AdminPanel() {
               </div>
               <form onSubmit={handleGroupSubmit(onCreateGroup)} className="grid md:grid-cols-3 gap-2 items-center">
                 <div>
+                  <label htmlFor="groupName" className="block text-sm font-medium mb-1">Nombre del grupo</label>
                   <input
+                    id="groupName"
                     className="border rounded-xl p-2 w-full"
                     placeholder="Nombre del grupo"
                     {...groupForm("name", { required: "Nombre requerido" })}
-                    aria-label="Nombre del grupo"
                   />
                   {groupErrors?.name && <span className="text-xs text-red-600">{groupErrors.name.message}</span>}
                 </div>
