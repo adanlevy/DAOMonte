@@ -1353,7 +1353,10 @@ export default function App() {
       toast.success(`Acción ${key} completada con éxito`);
     } catch (e) {
       let msg = e?.shortMessage || e?.message || "Error en la acción";
-      if (msg.toLowerCase().includes("paused")) {
+      const lower = msg.toLowerCase();
+      if (e?.code === "CALL_EXCEPTION" || lower.includes("missing revert data")) {
+        msg = "La llamada al contrato falló. Verificá que estés en la red correcta o reintentá más tarde.";
+      } else if (lower.includes("paused")) {
         msg = "El contrato está en pausa. Intenta nuevamente cuando esté activo.";
       }
       toast.error(msg);
