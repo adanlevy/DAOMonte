@@ -250,10 +250,10 @@ export default function AdminPanel() {
           }
         >
           {adminOpen && (
-            <div className="grid gap-6">
+            <div className="grid grid-cols-1 gap-6 w-full">
             {/* Gestión de administradores */}
             <div className="border rounded-xl p-3 bg-white">
-              <div className="flex items-center gap-2 mb-2 text-sm font-medium">
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <UserCog className="w-4 h-4" /> Gestión de administradores
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
@@ -298,8 +298,8 @@ export default function AdminPanel() {
             {/* Pausabilidad */}
             {isOwner && (
               <div className="border rounded-xl p-3 bg-white">
-                <div className="flex items-center gap-2 mb-2 text-sm font-medium">
-                  <Shield className="w-4 h-4" /> Control del contrato
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
+                <Shield className="w-4 h-4" /> Control del contrato
                   <span
                     className={`ml-auto px-2 py-0.5 rounded-full text-xs ${paused ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}
                   >
@@ -339,7 +339,7 @@ export default function AdminPanel() {
 
             {/* Creación de grupo */}
             <div className="border rounded-xl p-3 bg-white">
-              <div className="flex items-center gap-2 mb-2 text-sm font-medium">
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Creación de grupo
               </div>
               <form onSubmit={handleGroupSubmit(onCreateGroup)} className="grid md:grid-cols-3 gap-2 items-center">
@@ -367,7 +367,7 @@ export default function AdminPanel() {
 
             {/* Listado de grupos */}
             <div className="border rounded-xl p-3 bg-white">
-              <div className="flex items-center gap-2 mb-2 text-sm font-medium">
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Grupos existentes
               </div>
               <div className="flex flex-wrap gap-2">
@@ -413,7 +413,7 @@ export default function AdminPanel() {
 
             {/* Creación de propuesta */}
             <div className="border rounded-xl p-3 bg-white">
-              <div className="flex items-center gap-2 mb-2 text-sm font-medium">
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Shield className="w-4 h-4" /> Crear propuesta
               </div>
               <form onSubmit={handleProposalSubmit(onCreateProposal)} className="grid gap-3">
@@ -485,7 +485,7 @@ export default function AdminPanel() {
 
             {/* Gestión de roster */}
             <div className="border rounded-xl p-3 bg-white">
-              <div className="flex items-center gap-2 mb-2 text-sm font-medium">
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Gestión de roster
               </div>
               <div className="grid gap-3">
