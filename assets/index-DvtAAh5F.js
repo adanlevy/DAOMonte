@@ -32198,8 +32198,8 @@ function RosterTable() {
         }
       )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-h-60 overflow-auto overflow-x-auto border rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-sm", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { className: "bg-gray-100 sticky top-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-h-60 overflow-auto overflow-x-auto border rounded-xl dark:border-gray-700", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-sm", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { className: "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 sticky top-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-2 text-left", children: "✓" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-2 text-left", children: "Nombre" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-2 text-left", children: "Apellido" }),
@@ -32550,7 +32550,7 @@ function AdminPanel() {
                 {
                   disabled: isBusy("pause") || paused,
                   onClick: onPause,
-                  className: `rounded-xl border px-3 py-2 text-sm flex items-center gap-2 ${isBusy("pause") || paused ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-red-50 hover:bg-red-100"}`,
+                  className: `rounded-xl border px-3 py-2 text-sm flex items-center gap-2 dark:border-gray-600 ${isBusy("pause") || paused ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400" : "bg-red-50 hover:bg-red-100 text-red-700 dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-100"}`,
                   "aria-label": "Pausar contrato",
                   children: [
                     isBusy("pause") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
@@ -32564,7 +32564,7 @@ function AdminPanel() {
                 {
                   disabled: isBusy("unpause") || !paused,
                   onClick: onUnpause,
-                  className: `rounded-xl border px-3 py-2 text-sm flex items-center gap-2 ${isBusy("unpause") || !paused ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-green-50 hover:bg-green-100"}`,
+                  className: `rounded-xl border px-3 py-2 text-sm flex items-center gap-2 dark:border-gray-600 ${isBusy("unpause") || !paused ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400" : "bg-green-50 hover:bg-green-100 text-green-700 dark:bg-green-900 dark:hover:bg-green-800 dark:text-green-100"}`,
                   "aria-label": "Reanudar contrato",
                   children: [
                     isBusy("unpause") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
