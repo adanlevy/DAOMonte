@@ -178,7 +178,7 @@ export default function ProposalList() {
             </div>
           ) : (
           (demo ? demoProposals : activeProposals).map(p => (
-            <div key={p.id} className={`relative border rounded-xl p-3 ${nowSec() > p.endTime ? "bg-gray-50 border-gray-200" : "bg-white"}`}>
+            <div key={p.id} className={`relative border rounded-xl p-3 ${nowSec() > p.endTime ? "bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600" : "bg-white dark:bg-gray-800 dark:border-gray-700"}`}> 
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
@@ -186,7 +186,7 @@ export default function ProposalList() {
                     <span
                       key={gid}
                       title="Grupos que intervienen en esta votación"
-                      className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
+                      className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
                     >
                       {g.id} – {g.name}
                     </span>
@@ -204,7 +204,7 @@ export default function ProposalList() {
                 <button
                   className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
                     nowSec() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`)
-                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
                       : "bg-green-600 text-white hover:bg-green-700"
                 }`}
                   onClick={() => actionVote(p, 1)}
@@ -216,7 +216,7 @@ export default function ProposalList() {
                 <button
                   className={`rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${
                     nowSec() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`)
-                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
                       : "bg-red-600 text-white hover:bg-red-700"
                   }`}
                   onClick={() => actionVote(p, 2)}
@@ -294,7 +294,7 @@ export default function ProposalList() {
             </div>
           ) : (
           (demo ? demoProposals : closedProposals).map(p => (
-            <div key={p.id} className="relative border rounded-xl p-3 bg-gray-50 border-gray-200">
+            <div key={p.id} className="relative border rounded-xl p-3 bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600">
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
@@ -302,7 +302,7 @@ export default function ProposalList() {
                     <span
                       key={gid}
                       title="Grupos que intervienen en esta votación"
-                      className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
+                      className="inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
                     >
                       {g.id} – {g.name}
                     </span>

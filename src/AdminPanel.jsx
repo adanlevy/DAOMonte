@@ -188,7 +188,7 @@ export default function AdminPanel() {
   return (
     <>
       {contract && account && registered !== true && (
-        <div className="mb-4 p-4 border rounded-xl bg-white shadow-sm">
+        <div className="mb-4 p-4 border rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Registro de Usuario</h3>
           <p className="text-sm text-gray-600 mb-4">Ingresa tus datos para asociarlos a tu billetera la primera vez.</p>
           <form onSubmit={handleUserSubmit(onRegisterUser)} className="grid gap-3">
@@ -252,7 +252,7 @@ export default function AdminPanel() {
           {adminOpen && (
             <div className="grid grid-cols-1 gap-6 w-full">
             {/* Gestión de administradores */}
-            <div className="border rounded-xl p-3 bg-white">
+            <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <UserCog className="w-4 h-4" /> Gestión de administradores
               </div>
@@ -268,7 +268,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("addAdmin")}
                   onClick={onAddAdmin}
-                  className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                  className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600"
                   aria-label="Agregar administrador"
                 >
                   {isBusy("addAdmin") && <Loader2 className="w-4 h-4 animate-spin" />} Agregar
@@ -276,7 +276,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("rmAdmin")}
                   onClick={onRemoveAdmin}
-                  className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                  className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600"
                   aria-label="Revocar administrador"
                 >
                   {isBusy("rmAdmin") && <Loader2 className="w-4 h-4 animate-spin" />} Revocar
@@ -297,7 +297,7 @@ export default function AdminPanel() {
 
             {/* Pausabilidad */}
             {isOwner && (
-              <div className="border rounded-xl p-3 bg-white">
+              <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Shield className="w-4 h-4" /> Control del contrato
                   <span
@@ -338,7 +338,7 @@ export default function AdminPanel() {
             )}
 
             {/* Creación de grupo */}
-            <div className="border rounded-xl p-3 bg-white">
+            <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Creación de grupo
               </div>
@@ -366,7 +366,7 @@ export default function AdminPanel() {
             </div>
 
             {/* Listado de grupos */}
-            <div className="border rounded-xl p-3 bg-white">
+            <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Grupos existentes
               </div>
@@ -378,14 +378,14 @@ export default function AdminPanel() {
                     <div key={id}>
                       <button
                         onClick={() => toggleMembers(id)}
-                        className={`mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 ${open ? "bg-gray-100" : "bg-white"}`}
+                        className={`mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`}
                         aria-label={`Toggle miembros del grupo ${g.name}`}
                       >
                         {open ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                         {id} – {g.name}
                       </button>
                       {open && (
-                        <div className="mt-1 mb-3 ml-2 p-2 border rounded-xl bg-gray-50 max-h-40 overflow-auto text-xs">
+                        <div className="mt-1 mb-3 ml-2 p-2 border rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600 max-h-40 overflow-auto text-xs">
                           <div className="mb-1 text-gray-600">
                             Integrantes ({demo ? (demoGroups.find((x) => x.id === id)?.memberCount || 0) : (groupMembersCache[id]?.length ?? g.memberCount)}):
                           </div>
@@ -412,7 +412,7 @@ export default function AdminPanel() {
             </div>
 
             {/* Creación de propuesta */}
-            <div className="border rounded-xl p-3 bg-white">
+            <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Shield className="w-4 h-4" /> Crear propuesta
               </div>
@@ -484,7 +484,7 @@ export default function AdminPanel() {
             </div>
 
             {/* Gestión de roster */}
-            <div className="border rounded-xl p-3 bg-white">
+            <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Gestión de roster
               </div>
@@ -502,7 +502,7 @@ export default function AdminPanel() {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <button
-                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600"
                       disabled={isBusy("loadRosterURL")}
                       onClick={() =>
                         run("loadRosterURL", async () => {
@@ -514,7 +514,7 @@ export default function AdminPanel() {
                       {isBusy("loadRosterURL") && <Loader2 className="w-4 h-4 animate-spin" />} Cargar remoto
                     </button>
                     <button
-                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100"
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600"
                       disabled={isBusy("saveRosterURL")}
                       onClick={() =>
                         run("saveRosterURL", async () => {
@@ -533,7 +533,7 @@ export default function AdminPanel() {
                       {isBusy("saveRosterURL") && <Loader2 className="w-4 h-4 animate-spin" />} Publicar URL
                     </button>
                     <button
-                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-white hover:bg-gray-50"
+                      className="rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700"
                       onClick={clearRosterAssociation}
                       aria-label="Limpiar padrón"
                     >

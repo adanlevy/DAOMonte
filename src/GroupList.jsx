@@ -66,7 +66,7 @@ const MembersModal = ({ groupId, onClose, triggerRef }) => {
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-gray-100 sticky top-0">
+              <thead className="bg-gray-100 dark:bg-gray-700 sticky top-0">
                 <tr>
                   <th className="p-2 text-left">Nombre</th>
                   <th className="p-2 text-left">Apellido</th>
@@ -78,7 +78,7 @@ const MembersModal = ({ groupId, onClose, triggerRef }) => {
                 {addresses.map((addr, i) => {
                   const meta = rosterIndex.get((addr || "").toLowerCase()) || {};
                   return (
-                    <tr key={i} className="border-t">
+                    <tr key={i} className="border-t dark:border-gray-700">
                       <td className="p-2">{meta.name || ""}</td>
                       <td className="p-2">{meta.surname || ""}</td>
                       <td className="p-2">{meta.dni || ""}</td>
@@ -143,7 +143,7 @@ export default function GroupList() {
                   <button
                     key={id}
                     onClick={(e) => toggleMembers(id, e)}
-                    className={`mr-2 mb-2 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm ring-1 ring-gray-200 ${open ? "bg-gray-100" : "bg-white"}`}
+                    className={`mr-2 mb-2 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`}
                     aria-label={`Ver miembros del grupo ${g.name}`}
                   >
                     {open ? <ChevronDown className="w-3 h-3"/> : <ChevronRight className="w-3 h-3"/>}
