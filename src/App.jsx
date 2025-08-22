@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AdminPanel from "./AdminPanel";
 import GroupList from "./GroupList";
 import ProposalList from "./ProposalList";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 // ------------------ CONFIG ------------------
 const AMOY = {
@@ -1769,7 +1770,7 @@ export default function App() {
       csvData, setCsvData, baseAddresses, setBaseAddresses, run, withGas, isBusy, fetchAll,
       parseRemoteCSV, clearRosterAssociation, rosterIndex, demoGroups, demoProposals, registerUser
     }}>
-      <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-gray-100 p-4 md:p-8">
         <div className="max-w-6xl mx-auto space-y-6">
           <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -1777,6 +1778,7 @@ export default function App() {
               <p className="text-sm text-gray-500">Votaciones por grupos • MetaMask • Registro con hash • Modo Demo</p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
+              <ThemeSwitcher />
               <label className="inline-flex items-center gap-2 text-sm">
                 <input type="checkbox" className="h-4 w-4" checked={demo} onChange={(e) => setDemo(e.target.checked)} aria-label="Activar modo demo" />
                 Modo demo
