@@ -32233,7 +32233,7 @@ function RosterTable() {
   ] });
 }
 function Card({ title, icon, children, actions, className = "" }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `rounded-2xl shadow-sm border p-4 ${className || "bg-white dark:bg-gray-800"}`, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `rounded-2xl shadow-sm border p-4 bg-white dark:bg-gray-800 ${className}`, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 font-semibold text-lg", children: [
         icon,
@@ -32400,7 +32400,7 @@ function AdminPanel() {
   };
   if (!contract && !demo) return null;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    contract && account && registered !== true && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 p-4 border rounded-xl bg-white shadow-sm", children: [
+    contract && account && registered !== true && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4 p-4 border rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold mb-2", children: "Registro de Usuario" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-4", children: "Ingresa tus datos para asociarlos a tu billetera la primera vez." }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleUserSubmit(onRegisterUser), className: "grid gap-3", children: [
@@ -32480,7 +32480,7 @@ function AdminPanel() {
           }
         ),
         children: adminOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 gap-6 w-full", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(UserCog, { className: "w-4 h-4" }),
               " Gestión de administradores"
@@ -32502,7 +32502,7 @@ function AdminPanel() {
                 {
                   disabled: isBusy("addAdmin"),
                   onClick: onAddAdmin,
-                  className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100",
+                  className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600",
                   "aria-label": "Agregar administrador",
                   children: [
                     isBusy("addAdmin") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
@@ -32515,7 +32515,7 @@ function AdminPanel() {
                 {
                   disabled: isBusy("rmAdmin"),
                   onClick: onRemoveAdmin,
-                  className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100",
+                  className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600",
                   "aria-label": "Revocar administrador",
                   children: [
                     isBusy("rmAdmin") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
@@ -32532,7 +32532,7 @@ function AdminPanel() {
               ] })
             ] })
           ] }),
-          isOwner && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white", children: [
+          isOwner && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-4 h-4" }),
               " Control del contrato",
@@ -32575,7 +32575,7 @@ function AdminPanel() {
               )
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-4 h-4" }),
               " Creación de grupo"
@@ -32613,7 +32613,7 @@ function AdminPanel() {
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-4 h-4" }),
               " Grupos existentes"
@@ -32627,7 +32627,7 @@ function AdminPanel() {
                     "button",
                     {
                       onClick: () => toggleMembers(id2),
-                      className: `mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 ${open ? "bg-gray-100" : "bg-white"}`,
+                      className: `mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`,
                       "aria-label": `Toggle miembros del grupo ${g.name}`,
                       children: [
                         open ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "w-3 h-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-3 h-3" }),
@@ -32637,7 +32637,7 @@ function AdminPanel() {
                       ]
                     }
                   ),
-                  open && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-1 mb-3 ml-2 p-2 border rounded-xl bg-gray-50 max-h-40 overflow-auto text-xs", children: [
+                  open && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-1 mb-3 ml-2 p-2 border rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600 max-h-40 overflow-auto text-xs", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-1 text-gray-600", children: [
                       "Integrantes (",
                       demo ? demoGroups.find((x) => x.id === id2)?.memberCount || 0 : groupMembersCache[id2]?.length ?? g.memberCount,
@@ -32656,7 +32656,7 @@ function AdminPanel() {
               !demo && groups.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm text-gray-500", children: "No hay grupos creados." })
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-4 h-4" }),
               " Crear propuesta"
@@ -32744,7 +32744,7 @@ function AdminPanel() {
               )
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-4 h-4" }),
               " Gestión de roster"
@@ -32767,7 +32767,7 @@ function AdminPanel() {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
-                    className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100",
+                    className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600",
                     disabled: isBusy("loadRosterURL"),
                     onClick: () => run("loadRosterURL", async () => {
                       if (rosterURL) await parseRemoteCSV(rosterURL);
@@ -32782,7 +32782,7 @@ function AdminPanel() {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
-                    className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100",
+                    className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600",
                     disabled: isBusy("saveRosterURL"),
                     onClick: () => run("saveRosterURL", async () => {
                       const tx = await withGas2(
@@ -32804,7 +32804,7 @@ function AdminPanel() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
                   {
-                    className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-white hover:bg-gray-50",
+                    className: "rounded-xl border px-3 py-2 text-sm flex items-center gap-2 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700",
                     onClick: clearRosterAssociation,
                     "aria-label": "Limpiar padrón",
                     children: "Limpiar padrón"
@@ -32870,7 +32870,7 @@ const MembersModal = ({ groupId, onClose, triggerRef }) => {
       /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
       " Cargando integrantes…"
     ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-sm", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { className: "bg-gray-100 sticky top-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { className: "bg-gray-100 dark:bg-gray-700 sticky top-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-2 text-left", children: "Nombre" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-2 text-left", children: "Apellido" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "p-2 text-left", children: "DNI" }),
@@ -32878,7 +32878,7 @@ const MembersModal = ({ groupId, onClose, triggerRef }) => {
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { children: addresses.map((addr, i) => {
         const meta = rosterIndex.get((addr || "").toLowerCase()) || {};
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-t", children: [
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "border-t dark:border-gray-700", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-2", children: meta.name || "" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-2", children: meta.surname || "" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "p-2", children: meta.dni || "" }),
@@ -32938,7 +32938,7 @@ function GroupList() {
               "button",
               {
                 onClick: (e) => toggleMembers(id2, e),
-                className: `mr-2 mb-2 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm ring-1 ring-gray-200 ${open ? "bg-gray-100" : "bg-white"}`,
+                className: `mr-2 mb-2 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`,
                 "aria-label": `Ver miembros del grupo ${g.name}`,
                 children: [
                   open ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "w-3 h-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-3 h-3" }),
@@ -35028,14 +35028,14 @@ function ProposalList() {
           loadingProposals ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 mt-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-6 w-full" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-6 w-full" })
-          ] }) : (demo ? demoProposals : activeProposals).map((p) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `relative border rounded-xl p-3 ${nowSec$1() > p.endTime ? "bg-gray-50 border-gray-200" : "bg-white"}`, children: [
+          ] }) : (demo ? demoProposals : activeProposals).map((p) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `relative border rounded-xl p-3 ${nowSec$1() > p.endTime ? "bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600" : "bg-white dark:bg-gray-800 dark:border-gray-700"}`, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-2 right-2 flex flex-wrap gap-1 justify-end", children: (p.groupIds || [p.groupId]).map((gid) => {
               const g = (demo ? demoGroups : groups).find((x) => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
               return /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "span",
                 {
                   title: "Grupos que intervienen en esta votación",
-                  className: "inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700",
+                  className: "inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300",
                   children: [
                     g.id,
                     " – ",
@@ -35064,7 +35064,7 @@ function ProposalList() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
-                  className: `rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${nowSec$1() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`) ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-green-600 text-white hover:bg-green-700"}`,
+                  className: `rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${nowSec$1() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`) ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400" : "bg-green-600 text-white hover:bg-green-700"}`,
                   onClick: () => actionVote(p, 1),
                   disabled: nowSec$1() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0,
                   "aria-label": "Votar a favor",
@@ -35077,7 +35077,7 @@ function ProposalList() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
-                  className: `rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${nowSec$1() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`) ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-red-600 text-white hover:bg-red-700"}`,
+                  className: `rounded-xl px-3 py-2 flex items-center gap-2 text-sm font-medium transition ${nowSec$1() > p.endTime || p.myVote !== 0 || isBusy(`vote:${p.id}`) ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400" : "bg-red-600 text-white hover:bg-red-700"}`,
                   onClick: () => actionVote(p, 2),
                   disabled: nowSec$1() > p.endTime || isBusy(`vote:${p.id}`) || p.myVote !== 0,
                   "aria-label": "Votar en contra",
@@ -35160,14 +35160,14 @@ function ProposalList() {
           loadingProposals ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 mt-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-6 w-full" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-6 w-full" })
-          ] }) : (demo ? demoProposals : closedProposals).map((p) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative border rounded-xl p-3 bg-gray-50 border-gray-200", children: [
+          ] }) : (demo ? demoProposals : closedProposals).map((p) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative border rounded-xl p-3 bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-2 right-2 flex flex-wrap gap-1 justify-end", children: (p.groupIds || [p.groupId]).map((gid) => {
               const g = (demo ? demoGroups : groups).find((x) => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
               return /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "span",
                 {
                   title: "Grupos que intervienen en esta votación",
-                  className: "inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700",
+                  className: "inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300",
                   children: [
                     g.id,
                     " – ",
