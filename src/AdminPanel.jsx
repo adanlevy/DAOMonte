@@ -310,10 +310,10 @@ export default function AdminPanel() {
                   <button
                     disabled={isBusy("pause") || paused}
                     onClick={onPause}
-                    className={`rounded-xl border px-3 py-2 text-sm flex items-center gap-2 ${
+                    className={`rounded-xl border px-3 py-2 text-sm flex items-center gap-2 dark:border-gray-600 ${
                       isBusy("pause") || paused
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-red-50 hover:bg-red-100"
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                        : "bg-red-50 hover:bg-red-100 text-red-700 dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-100"
                     }`}
                     aria-label="Pausar contrato"
                   >
@@ -323,10 +323,10 @@ export default function AdminPanel() {
                   <button
                     disabled={isBusy("unpause") || !paused}
                     onClick={onUnpause}
-                    className={`rounded-xl border px-3 py-2 text-sm flex items-center gap-2 ${
+                    className={`rounded-xl border px-3 py-2 text-sm flex items-center gap-2 dark:border-gray-600 ${
                       isBusy("unpause") || !paused
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-green-50 hover:bg-green-100"
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                        : "bg-green-50 hover:bg-green-100 text-green-700 dark:bg-green-900 dark:hover:bg-green-800 dark:text-green-100"
                     }`}
                     aria-label="Reanudar contrato"
                   >

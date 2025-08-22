@@ -198,9 +198,9 @@ export default function RosterTable() {
           Descargar CSV
         </button>
       </div>
-      <div className="max-h-60 overflow-auto overflow-x-auto border rounded-xl">
+      <div className="max-h-60 overflow-auto overflow-x-auto border rounded-xl dark:border-gray-700">
         <table className="w-full text-sm">
-          <thead className="bg-gray-100 sticky top-0">
+          <thead className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 sticky top-0">
             <tr>
               <th className="p-2 text-left">✓</th>
               <th className="p-2 text-left">Nombre</th>
