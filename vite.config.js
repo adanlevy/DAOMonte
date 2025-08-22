@@ -1,17 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// Reemplazá NOMBRE_DEL_REPO por el nombre real del repo en GitHub
 export default defineConfig({
+  base: '/DAOMonte/',
   plugins: [react()],
   build: {
-    minify: false, // Desactiva la minificación
-    sourcemap: false, // Opcional: desactiva la creación de source maps
+    minify: false,
+    sourcemap: false,
+    outDir: 'dist',
   },
+  // Esta sección solo afecta al dev server; GitHub Pages no usa estos headers
   server: {
     contentSecurityPolicy: {
       directives: {
-        'script-src': ["'self'"], // Asegúrate de que solo se permita contenido de orígenes seguros
+        'script-src': ["'self'"],
       },
     },
   },
