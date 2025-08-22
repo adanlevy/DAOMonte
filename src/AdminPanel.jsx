@@ -175,7 +175,10 @@ export default function AdminPanel() {
 
   const onPause = async () => {
     await run("pause", async () => {
-      const tx = await contract.pause();
+      const tx = await withGas(
+        contract.pause.estimateGas(),
+        (opts) => contract.pause(opts)
+      );
       await tx.wait();
       await fetchAll();
     });
@@ -183,7 +186,10 @@ export default function AdminPanel() {
 
   const onUnpause = async () => {
     await run("unpause", async () => {
-      const tx = await contract.unpause();
+      const tx = await withGas(
+        contract.unpause.estimateGas(),
+        (opts) => contract.unpause(opts)
+      );
       await tx.wait();
       await fetchAll();
     });
@@ -516,7 +522,10 @@ export default function AdminPanel() {
                     disabled={isBusy("saveRosterURL")}
                     onClick={() =>
                       run("saveRosterURL", async () => {
-                        const tx = await contract.setRosterURI(rosterURL);
+                        const tx = await withGas(
+                          contract.setRosterURI.estimateGas(rosterURL),
+                          (opts) => contract.setRosterURI(rosterURL, opts)
+                        );
                         await tx.wait();
                         localStorage.setItem("groupdao.rosterURL", rosterURL);
                         setRosterURL(rosterURL);
