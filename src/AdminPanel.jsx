@@ -342,8 +342,8 @@ export default function AdminPanel() {
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Creación de grupo
               </div>
-              <form onSubmit={handleGroupSubmit(onCreateGroup)} className="grid md:grid-cols-3 gap-2 items-center">
-                <div>
+              <form onSubmit={handleGroupSubmit(onCreateGroup)} className="flex flex-wrap gap-2 items-end">
+                <div className="flex-1 min-w-[200px]">
                   <label htmlFor="groupName" className="block text-sm font-medium mb-1">Nombre del grupo</label>
                   <input
                     id="groupName"
@@ -356,19 +356,18 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("createGroup")}
                   type="submit"
-                  className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90"
+                  className="w-fit rounded-xl bg-black text-white px-3 py-1 flex items-center justify-center gap-2 hover:opacity-90"
                   aria-label="Crear grupo"
                 >
                   {isBusy("createGroup") && <Loader2 className="w-4 h-4 animate-spin" />} Crear grupo
                 </button>
-                <div className="text-sm text-gray-500">Total grupos: {demo ? demoGroups.length : groups.length}</div>
               </form>
             </div>
 
             {/* Listado de grupos */}
             <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
-                <Users className="w-4 h-4" /> Grupos existentes
+                <Users className="w-4 h-4" /> Grupos existentes ({demo ? demoGroups.length : groups.length})
               </div>
               <div className="flex flex-wrap gap-2">
                 {(demo ? demoGroups.map((g) => g.id) : groups.map((g) => g.id)).map((id) => {
