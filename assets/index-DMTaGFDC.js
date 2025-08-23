@@ -32580,8 +32580,8 @@ function AdminPanel() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-4 h-4" }),
               " Creación de grupo"
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleGroupSubmit(onCreateGroup), className: "grid md:grid-cols-3 gap-2 items-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleGroupSubmit(onCreateGroup), className: "flex flex-wrap gap-2 items-end", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-[200px]", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "groupName", className: "block text-sm font-medium mb-1", children: "Nombre del grupo" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "input",
@@ -32599,24 +32599,22 @@ function AdminPanel() {
                 {
                   disabled: isBusy("createGroup"),
                   type: "submit",
-                  className: "rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90",
+                  className: "w-fit rounded-xl bg-black text-white px-3 py-1 flex items-center justify-center gap-2 hover:opacity-90",
                   "aria-label": "Crear grupo",
                   children: [
                     isBusy("createGroup") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
                     " Crear grupo"
                   ]
                 }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-sm text-gray-500", children: [
-                "Total grupos: ",
-                demo ? demoGroups.length : groups.length
-              ] })
+              )
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-4 h-4" }),
-              " Grupos existentes"
+              " Grupos existentes (",
+              demo ? demoGroups.length : groups.length,
+              ")"
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
               (demo ? demoGroups.map((g) => g.id) : groups.map((g) => g.id)).map((id2) => {

@@ -1474,8 +1474,15 @@ video {
 .w-5 {
   width: 1.25rem;
 }
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
 .w-full {
   width: 100%;
+}
+.min-w-\[200px\] {
+  min-width: 200px;
 }
 .max-w-6xl {
   max-width: 72rem;
@@ -1529,6 +1536,9 @@ video {
 }
 .items-start {
   align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
 }
 .items-center {
   align-items: center;
