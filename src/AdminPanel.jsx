@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
-import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, Shield, Pause, Play } from "lucide-react";
+import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, FileText, Shield, Pause, Play } from "lucide-react";
 import { toast } from "react-toastify";
 import RosterTable from "./RosterTable";
 import Card from "./components/Card";
@@ -299,7 +299,7 @@ export default function AdminPanel() {
             {isOwner && (
               <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
-                <Shield className="w-4 h-4" /> Control del contrato
+                <FileText className="w-4 h-4" /> Control del contrato
                   <span
                     className={`ml-auto px-2 py-0.5 rounded-full text-xs ${paused ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}
                   >
@@ -343,11 +343,11 @@ export default function AdminPanel() {
                 <Users className="w-4 h-4" /> Creación de grupo
               </div>
               <form onSubmit={handleGroupSubmit(onCreateGroup)} className="flex flex-wrap gap-2 items-end">
-                <div className="flex-1 min-w-[200px]">
+                <div className="w-1/2 min-w-[200px]">
                   <label htmlFor="groupName" className="block text-sm font-medium mb-1">Nombre del grupo</label>
                   <input
                     id="groupName"
-                    className="border rounded-xl p-2 w-full"
+                    className="border rounded-xl p-2 w-full h-10"
                     placeholder="Nombre del grupo"
                     {...groupForm("name", { required: "Nombre requerido" })}
                   />
@@ -356,7 +356,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("createGroup")}
                   type="submit"
-                  className="w-fit rounded-xl bg-black text-white px-3 py-1 flex items-center justify-center gap-2 hover:opacity-90"
+                  className="w-fit rounded-xl bg-black text-white px-3 h-10 flex items-center justify-center gap-2 hover:opacity-90"
                   aria-label="Crear grupo"
                 >
                   {isBusy("createGroup") && <Loader2 className="w-4 h-4 animate-spin" />} Crear grupo
@@ -377,7 +377,7 @@ export default function AdminPanel() {
                     <div key={id}>
                       <button
                         onClick={() => toggleMembers(id)}
-                        className={`mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`}
+                        className={`mr-2 mb-2 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`}
                         aria-label={`Toggle miembros del grupo ${g.name}`}
                       >
                         {open ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}

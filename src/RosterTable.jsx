@@ -147,26 +147,23 @@ export default function RosterTable() {
   return (
     <div className="mt-4">
       <div className="text-sm font-semibold mb-2">Agregar personas a grupo</div>
-      <div className="grid md:grid-cols-4 gap-2 items-center mb-3">
-        <div className="flex items-center gap-2">
-          <ListFilter className="w-4 h-4" />
-          <label htmlFor="rosterFilter" className="text-sm font-medium">Filtro</label>
-          <input
-            id="rosterFilter"
-            className="border rounded-xl p-2 w-full"
-            placeholder="Filtrar por nombre, apellido, DNI o address…"
-            value={rosterFilter}
-            onChange={(e) => setRosterFilter(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="targetGroup" className="block text-sm font-medium mb-1">Grupo</label>
-          <select
-            id="targetGroup"
-            className="border rounded-xl p-2 w-full"
-            value={targetGroupId}
-            onChange={(e) => setTargetGroupId(e.target.value)}
-          >
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        <ListFilter className="w-4 h-4" />
+        <label htmlFor="rosterFilter" className="text-sm font-medium">Filtro</label>
+        <input
+          id="rosterFilter"
+          className="border rounded-xl p-2 h-10 min-w-[180px]"
+          placeholder="Filtrar por nombre, apellido, DNI o address…"
+          value={rosterFilter}
+          onChange={(e) => setRosterFilter(e.target.value)}
+        />
+        <select
+          id="targetGroup"
+          className="border rounded-xl p-2 h-10 min-w-[180px]"
+          value={targetGroupId}
+          onChange={(e) => setTargetGroupId(e.target.value)}
+          aria-label="Elegí grupo"
+        >
           <option value="">Elegí grupo…</option>
           {(demo ? demoGroups : groups).map((g) => (
             <option key={g.id} value={g.id}>
@@ -174,7 +171,6 @@ export default function RosterTable() {
             </option>
           ))}
         </select>
-        </div>
         <button
           disabled={isBusy("bulkAdd")}
           onClick={async () => {
@@ -185,14 +181,14 @@ export default function RosterTable() {
             if (!addrs.length) return toast.error("Seleccioná al menos una persona");
             await actionBulkAddToGroup(addrs, targetGroupId);
           }}
-          className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90"
+          className="rounded-xl bg-black text-white px-4 h-10 flex items-center gap-2 hover:opacity-90"
           aria-label="Agregar usuarios seleccionados al grupo"
         >
           {isBusy("bulkAdd") && <Loader2 className="w-4 h-4 animate-spin" />} Agregar seleccionados
         </button>
         <button
           onClick={downloadCSV}
-          className="rounded-xl bg-blue-600 text-white px-4 py-2 hover:opacity-90"
+          className="rounded-xl bg-blue-600 text-white px-4 h-10 hover:opacity-90"
           aria-label="Descargar roster como CSV"
         >
           Descargar CSV
