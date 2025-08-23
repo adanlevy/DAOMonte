@@ -29398,24 +29398,35 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$i = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$i);
+const __iconNode$j = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$j);
 /**
  * @license lucide-react v0.540.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$h = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$h);
+const __iconNode$i = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$i);
 /**
  * @license lucide-react v0.540.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$g = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("chevron-right", __iconNode$g);
+const __iconNode$h = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$h);
+/**
+ * @license lucide-react v0.540.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$g = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["line", { x1: "9", x2: "15", y1: "15", y2: "9", key: "1dfufj" }]
+];
+const CircleSlash = createLucideIcon("circle-slash", __iconNode$g);
 /**
  * @license lucide-react v0.540.0 - ISC
  *
@@ -29423,10 +29434,13 @@ const ChevronRight = createLucideIcon("chevron-right", __iconNode$g);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$f = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["line", { x1: "9", x2: "15", y1: "15", y2: "9", key: "1dfufj" }]
+  ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
+  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
+  ["path", { d: "M10 9H8", key: "b1mrlr" }],
+  ["path", { d: "M16 13H8", key: "t4e002" }],
+  ["path", { d: "M16 17H8", key: "z1uh3a" }]
 ];
-const CircleSlash = createLucideIcon("circle-slash", __iconNode$f);
+const FileText = createLucideIcon("file-text", __iconNode$f);
 /**
  * @license lucide-react v0.540.0 - ISC
  *
@@ -32135,41 +32149,37 @@ function RosterTable() {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold mb-2", children: "Agregar personas a grupo" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-4 gap-2 items-center mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ListFilter, { className: "w-4 h-4" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "rosterFilter", className: "text-sm font-medium", children: "Filtro" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "input",
-          {
-            id: "rosterFilter",
-            className: "border rounded-xl p-2 w-full",
-            placeholder: "Filtrar por nombre, apellido, DNI o address…",
-            value: rosterFilter,
-            onChange: (e) => setRosterFilter(e.target.value)
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "targetGroup", className: "block text-sm font-medium mb-1", children: "Grupo" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "select",
-          {
-            id: "targetGroup",
-            className: "border rounded-xl p-2 w-full",
-            value: targetGroupId,
-            onChange: (e) => setTargetGroupId(e.target.value),
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Elegí grupo…" }),
-              (demo ? demoGroups : groups).map((g) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: g.id, children: [
-                g.id,
-                " – ",
-                g.name
-              ] }, g.id))
-            ]
-          }
-        )
-      ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ListFilter, { className: "w-4 h-4" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "rosterFilter", className: "text-sm font-medium", children: "Filtro" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          id: "rosterFilter",
+          className: "border rounded-xl p-2 h-10 min-w-[180px]",
+          placeholder: "Filtrar por nombre, apellido, DNI o address…",
+          value: rosterFilter,
+          onChange: (e) => setRosterFilter(e.target.value)
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "select",
+        {
+          id: "targetGroup",
+          className: "border rounded-xl p-2 h-10 min-w-[180px]",
+          value: targetGroupId,
+          onChange: (e) => setTargetGroupId(e.target.value),
+          "aria-label": "Elegí grupo",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Elegí grupo…" }),
+            (demo ? demoGroups : groups).map((g) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: g.id, children: [
+              g.id,
+              " – ",
+              g.name
+            ] }, g.id))
+          ]
+        }
+      ),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
@@ -32180,7 +32190,7 @@ function RosterTable() {
             if (!addrs.length) return y.error("Seleccioná al menos una persona");
             await actionBulkAddToGroup(addrs, targetGroupId);
           },
-          className: "rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90",
+          className: "rounded-xl bg-black text-white px-4 h-10 flex items-center gap-2 hover:opacity-90",
           "aria-label": "Agregar usuarios seleccionados al grupo",
           children: [
             isBusy("bulkAdd") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
@@ -32192,7 +32202,7 @@ function RosterTable() {
         "button",
         {
           onClick: downloadCSV,
-          className: "rounded-xl bg-blue-600 text-white px-4 py-2 hover:opacity-90",
+          className: "rounded-xl bg-blue-600 text-white px-4 h-10 hover:opacity-90",
           "aria-label": "Descargar roster como CSV",
           children: "Descargar CSV"
         }
@@ -32534,7 +32544,7 @@ function AdminPanel() {
           ] }),
           isOwner && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-2 text-sm font-medium", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { className: "w-4 h-4" }),
               " Control del contrato",
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
@@ -32581,13 +32591,13 @@ function AdminPanel() {
               " Creación de grupo"
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleGroupSubmit(onCreateGroup), className: "flex flex-wrap gap-2 items-end", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-[200px]", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-1/2 min-w-[200px]", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "groupName", className: "block text-sm font-medium mb-1", children: "Nombre del grupo" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "input",
                   {
                     id: "groupName",
-                    className: "border rounded-xl p-2 w-full",
+                    className: "border rounded-xl p-2 w-full h-10",
                     placeholder: "Nombre del grupo",
                     ...groupForm("name", { required: "Nombre requerido" })
                   }
@@ -32599,7 +32609,7 @@ function AdminPanel() {
                 {
                   disabled: isBusy("createGroup"),
                   type: "submit",
-                  className: "w-fit rounded-xl bg-black text-white px-3 py-1 flex items-center justify-center gap-2 hover:opacity-90",
+                  className: "w-fit rounded-xl bg-black text-white px-3 h-10 flex items-center justify-center gap-2 hover:opacity-90",
                   "aria-label": "Crear grupo",
                   children: [
                     isBusy("createGroup") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
@@ -32625,7 +32635,7 @@ function AdminPanel() {
                     "button",
                     {
                       onClick: () => toggleMembers(id2),
-                      className: `mr-2 mb-2 inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`,
+                      className: `mr-2 mb-2 inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm ring-1 ring-gray-200 dark:ring-gray-600 ${open ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800"}`,
                       "aria-label": `Toggle miembros del grupo ${g.name}`,
                       children: [
                         open ? /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: "w-3 h-3" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-3 h-3" }),
