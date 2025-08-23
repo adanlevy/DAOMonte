@@ -342,7 +342,7 @@ export default function AdminPanel() {
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
                 <Users className="w-4 h-4" /> Creación de grupo
               </div>
-              <form onSubmit={handleGroupSubmit(onCreateGroup)} className="grid md:grid-cols-3 gap-2 items-start">
+              <form onSubmit={handleGroupSubmit(onCreateGroup)} className="grid md:grid-cols-3 gap-2 items-center">
                 <div>
                   <label htmlFor="groupName" className="block text-sm font-medium mb-1">Nombre del grupo</label>
                   <input
@@ -356,7 +356,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("createGroup")}
                   type="submit"
-                  className="w-fit rounded-xl bg-black text-white px-3 py-1 flex items-center justify-center gap-2 hover:opacity-90"
+                  className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90"
                   aria-label="Crear grupo"
                 >
                   {isBusy("createGroup") && <Loader2 className="w-4 h-4 animate-spin" />} Crear grupo
