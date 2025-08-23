@@ -237,7 +237,7 @@ export default function AdminPanel() {
         <Card
           title={<div className="flex items-center gap-2"><Settings className="w-5 h-5"/> Administración</div>}
           icon={<span />}
-          className="bg-indigo-50 dark:bg-indigo-900"
+          className="bg-sky-100 dark:bg-indigo-900"
           actions={
             <button
               onClick={() => setAdminOpen((v) => !v)}
@@ -285,11 +285,17 @@ export default function AdminPanel() {
               <div className="mt-3 text-sm">
                 <div className="font-medium">Admins actuales:</div>
                 <ul className="list-disc pl-5 text-xs mt-1">
-                  {(admins || []).map((a, i) => (
-                    <li key={i} className="font-mono">
-                      {a}
-                    </li>
-                  ))}
+                  {(admins || []).map((a, i) => {
+                    const meta = rosterIndex.get((a || "").toLowerCase());
+                    return (
+                      <li key={i} className="font-mono">
+                        {a}
+                        {meta && (meta.name || meta.surname) && (
+                          <span> ({`${meta.name} ${meta.surname}`.trim()})</span>
+                        )}
+                      </li>
+                    );
+                  })}
                   {(!admins || admins.length === 0) && <li className="text-gray-500">No disponible</li>}
                 </ul>
               </div>
@@ -436,23 +442,29 @@ export default function AdminPanel() {
                   </div>
                 </div>
                 <div className="grid md:grid-cols-3 gap-2">
-                  <select
-                    className="border rounded-xl p-2"
-                    {...proposalForm("groupId", { required: "Grupo requerido" })}
-                    aria-label="Seleccionar grupo"
-                  >
-                    <option value="">Elegí grupo…</option>
-                    {(demo ? demoGroups : groups).map((g) => (
-                      <option key={g.id} value={g.id}>
-                        {g.id} – {g.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Grupo</label>
+                    <select
+                      className="border rounded-xl p-2 w-full h-10"
+                      {...proposalForm("groupId", { required: "Grupo requerido" })}
+                      aria-label="Seleccionar grupo"
+                    >
+                      <option value="">Elegí grupo…</option>
+                      {(demo ? demoGroups : groups).map((g) => (
+                        <option key={g.id} value={g.id}>
+                          {g.id} – {g.name}
+                        </option>
+                      ))}
+                    </select>
+                    {proposalErrors.groupId && (
+                      <span className="text-xs text-red-600">{proposalErrors.groupId.message}</span>
+                    )}
+                  </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Desde</label>
                     <input
                       type="date"
-                      className="border rounded-xl p-2 w-full"
+                      className="border rounded-xl p-2 w-full h-10"
                       {...proposalForm("startDate", { required: "Fecha de inicio requerida" })}
                       aria-label="Fecha de inicio"
                     />
@@ -464,7 +476,7 @@ export default function AdminPanel() {
                     <label className="block text-sm font-medium text-gray-700">Hasta</label>
                     <input
                       type="date"
-                      className="border rounded-xl p-2 w-full"
+                      className="border rounded-xl p-2 w-full h-10"
                       {...proposalForm("endDate", { required: "Fecha de fin requerida" })}
                       aria-label="Fecha de fin"
                     />
@@ -474,7 +486,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("createProposal")}
                   type="submit"
-                  className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90"
+                  className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90 w-fit justify-self-start"
                   aria-label="Crear propuesta"
                 >
                   {isBusy("createProposal") && <Loader2 className="w-4 h-4 animate-spin" />} Crear propuesta
