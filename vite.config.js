@@ -1,16 +1,17 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Reemplazá NOMBRE_DEL_REPO por el nombre real del repo en GitHub
+// ✅ Project Page en https://TUUSUARIO.github.io/DAOMonte/
 export default defineConfig({
-  base: '/DAOMonte/',
+  base: '/DAOMonte/',          // ← dejalo así para GitHub Pages
   plugins: [react()],
   build: {
+    outDir: 'dist',
     minify: false,
     sourcemap: false,
-    outDir: 'dist',
   },
-  // Esta sección solo afecta al dev server; GitHub Pages no usa estos headers
+  // Esta sección solo aplica al dev server local
   server: {
     contentSecurityPolicy: {
       directives: {
