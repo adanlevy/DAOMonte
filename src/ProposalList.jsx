@@ -178,7 +178,7 @@ export default function ProposalList() {
             </div>
           ) : (
           (demo ? demoProposals : activeProposals).map(p => (
-            <div key={p.id} className={`relative border rounded-xl p-3 ${nowSec() > p.endTime ? "bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600" : "bg-white dark:bg-gray-800 dark:border-gray-700"}`}> 
+            <div key={p.id} className={`relative border-2 rounded-xl p-3 shadow-sm ${nowSec() > p.endTime ? "bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-500" : "bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-600"}`}>
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
@@ -294,7 +294,7 @@ export default function ProposalList() {
             </div>
           ) : (
           (demo ? demoProposals : closedProposals).map(p => (
-            <div key={p.id} className="relative border rounded-xl p-3 bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+            <div key={p.id} className="relative border-2 rounded-xl p-3 shadow-sm bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-500">
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
