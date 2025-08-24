@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
-import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, FileText, Shield, Pause, Play } from "lucide-react";
+import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, FileText, Shield, Pause, Play, UserPlus } from "lucide-react";
 import { toast } from "react-toastify";
 import RosterTable from "./RosterTable";
 import Card from "./components/Card";
@@ -494,10 +494,10 @@ export default function AdminPanel() {
               </form>
             </div>
 
-            {/* Gestión de roster */}
+            {/* Gestión de Datos Personales */}
             <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
-                <Users className="w-4 h-4" /> Gestión de roster
+                <Users className="w-4 h-4" /> Gestión de Datos Personales
               </div>
               <div className="grid gap-3">
                 <div className="flex flex-col sm:flex-row gap-2 w-full">
@@ -552,6 +552,13 @@ export default function AdminPanel() {
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Agregar personas a grupo */}
+            <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
+              <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
+                <UserPlus className="w-4 h-4" /> Agregar personas a grupo
               </div>
               <RosterTable />
             </div>
