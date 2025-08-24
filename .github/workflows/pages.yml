@@ -1,8 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (SPA)
 
 on:
   push:
-    branches: [ main ]   # Cambiá si usás otra rama
+    branches: [ main ]   # cambiá si usás otra rama
   workflow_dispatch:
 
 permissions:
@@ -30,8 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build (Vite)
+        run: |
+          npm run build
+          # Fallback para React Router en GitHub Pages:
+          # Sirve index.html cuando se pide una ruta directa
+          cp dist/index.html dist/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
