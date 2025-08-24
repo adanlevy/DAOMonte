@@ -145,8 +145,7 @@ export default function RosterTable() {
   };
 
   return (
-    <div className="mt-4">
-      <div className="text-sm font-semibold mb-2">Agregar personas a grupo</div>
+    <div>
       <div className="flex flex-wrap items-center gap-2 mb-3">
         <ListFilter className="w-4 h-4" />
         <label htmlFor="rosterFilter" className="text-sm font-medium">Filtro</label>
