@@ -32476,7 +32476,7 @@ function AdminPanel() {
           " Administración"
         ] }),
         icon: /* @__PURE__ */ jsxRuntimeExports.jsx("span", {}),
-        className: "bg-indigo-50 dark:bg-indigo-900",
+        className: "bg-sky-100 dark:bg-indigo-900",
         actions: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
@@ -32537,7 +32537,17 @@ function AdminPanel() {
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 text-sm", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-medium", children: "Admins actuales:" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "list-disc pl-5 text-xs mt-1", children: [
-                (admins || []).map((a, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "font-mono", children: a }, i)),
+                (admins || []).map((a, i) => {
+                  const meta = rosterIndex.get((a || "").toLowerCase());
+                  return /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "font-mono", children: [
+                    a,
+                    meta && (meta.name || meta.surname) && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                      " (",
+                      `${meta.name} ${meta.surname}`.trim(),
+                      ")"
+                    ] })
+                  ] }, i);
+                }),
                 (!admins || admins.length === 0) && /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "text-gray-500", children: "No disponible" })
               ] })
             ] })
@@ -32694,29 +32704,33 @@ function AdminPanel() {
                 ) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-3 gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "select",
-                  {
-                    className: "border rounded-xl p-2",
-                    ...proposalForm("groupId", { required: "Grupo requerido" }),
-                    "aria-label": "Seleccionar grupo",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Elegí grupo…" }),
-                      (demo ? demoGroups : groups).map((g) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: g.id, children: [
-                        g.id,
-                        " – ",
-                        g.name
-                      ] }, g.id))
-                    ]
-                  }
-                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700", children: "Grupo" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "select",
+                    {
+                      className: "border rounded-xl p-2 w-full h-10",
+                      ...proposalForm("groupId", { required: "Grupo requerido" }),
+                      "aria-label": "Seleccionar grupo",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Elegí grupo…" }),
+                        (demo ? demoGroups : groups).map((g) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: g.id, children: [
+                          g.id,
+                          " – ",
+                          g.name
+                        ] }, g.id))
+                      ]
+                    }
+                  ),
+                  proposalErrors.groupId && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-red-600", children: proposalErrors.groupId.message })
+                ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700", children: "Desde" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "input",
                     {
                       type: "date",
-                      className: "border rounded-xl p-2 w-full",
+                      className: "border rounded-xl p-2 w-full h-10",
                       ...proposalForm("startDate", { required: "Fecha de inicio requerida" }),
                       "aria-label": "Fecha de inicio"
                     }
@@ -32729,7 +32743,7 @@ function AdminPanel() {
                     "input",
                     {
                       type: "date",
-                      className: "border rounded-xl p-2 w-full",
+                      className: "border rounded-xl p-2 w-full h-10",
                       ...proposalForm("endDate", { required: "Fecha de fin requerida" }),
                       "aria-label": "Fecha de fin"
                     }
@@ -32742,7 +32756,7 @@ function AdminPanel() {
                 {
                   disabled: isBusy("createProposal"),
                   type: "submit",
-                  className: "rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90",
+                  className: "rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90 w-fit justify-self-start",
                   "aria-label": "Crear propuesta",
                   children: [
                     isBusy("createProposal") && /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "w-4 h-4 animate-spin" }),
