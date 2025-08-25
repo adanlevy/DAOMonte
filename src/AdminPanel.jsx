@@ -74,7 +74,7 @@ export default function AdminPanel() {
   };
 
   const onCreateGroup = async (data) => {
-    if (demo) return toast.success("Demo: grupo creado");
+    if (demo) return;
     await run("createGroup", async () => {
       const tx = await withGas(
         contract.createGroup.estimateGas(data.name),
@@ -87,7 +87,7 @@ export default function AdminPanel() {
   };
 
   const onCreateProposal = async (data) => {
-    if (demo) return toast.success("Demo: propuesta creada");
+    if (demo) return;
     if (!contract) return toast.error("Conectá tu wallet");
     if (!isAdmin) return toast.error("Solo admins pueden crear propuestas");
     const { title, description, groupId, startDate, endDate } = data;

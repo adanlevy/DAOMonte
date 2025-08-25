@@ -113,7 +113,7 @@ export default function ProposalList() {
 
   const actionVote = async (p, choice) => {
     const pid = p.id;
-    if (demo) return toast.success(`Demo: votaste ${choice === 1 ? "👍" : "👎"}`);
+    if (demo) return;
     await run(`vote:${pid}`, async () => {
       const tx = await withGas(
         contract.vote.estimateGas(pid, choice),
@@ -128,7 +128,7 @@ export default function ProposalList() {
 
   const actionRetractVote = async (p) => {
     const pid = p.id;
-    if (demo) return toast.success("Demo: retractaste tu voto");
+    if (demo) return;
     await run(`retract:${pid}`, async () => {
       let tx;
       try {
@@ -158,9 +158,9 @@ export default function ProposalList() {
       icon={<Shield className="w-5 h-5" />}
       actions={<div className="flex items-center gap-2 text-sm text-gray-500"><Loader2 className="w-4 h-4 animate-spin" hidden={!loadingProposals} /> {loadingProposals && "Actualizando votaciones…"}</div>}
     >
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <div className="flex justify-between">
+          <div className="flex justify-between mb-2">
             <h2 className="text-sm font-semibold">Votaciones en curso</h2>
             <input
               type="text"
@@ -276,7 +276,7 @@ export default function ProposalList() {
           )}
         </div>
         <div>
-          <div className="flex justify-between">
+          <div className="flex justify-between mb-2">
             <h2 className="text-sm font-semibold">Votaciones finalizadas</h2>
             <input
               type="text"
