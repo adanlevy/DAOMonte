@@ -59,7 +59,7 @@ export default function RosterTable() {
   }, [contract, roster]);
 
   const actionBulkAddToGroup = async (addrs, gid) => {
-    if (demo) return toast.success("Demo: asignación simulada");
+    if (demo) return;
 
     // Cargar miembros existentes para evitar duplicados
     let existing = groupMembersCache[gid];
@@ -78,11 +78,11 @@ export default function RosterTable() {
     const uniqueAddrs = addrs.filter((a) => !existingSet.has(a.toLowerCase()));
     const skipped = addrs.length - uniqueAddrs.length;
     if (!uniqueAddrs.length) {
-      toast.info("Todos los usuarios seleccionados ya están en el grupo");
+      toast.error("Todos los usuarios seleccionados ya están en el grupo");
       return;
     }
     if (skipped)
-      toast.info(
+      toast.error(
         `${skipped} persona${skipped > 1 ? "s" : ""} ya integraba el grupo y fue omitida`
       );
 

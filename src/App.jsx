@@ -1351,7 +1351,6 @@ export default function App() {
     setBusy((s) => ({ ...s, [key]: true }));
     try {
       await fn();
-      toast.success(`Acción ${key} completada con éxito`);
     } catch (e) {
       let msg = e?.shortMessage || e?.message || "Error en la acción";
       const lower = msg.toLowerCase();
@@ -1462,7 +1461,7 @@ export default function App() {
     }
 
     if (addrsSet.size === 0 && !demo) {
-      toast.warn("No se encontraron usuarios registrados. Verifica el contrato o carga un CSV.");
+      toast.error("No se encontraron usuarios registrados. Verifica el contrato o carga un CSV.");
     }
 
     return Array.from(addrsSet.values());
@@ -1743,7 +1742,7 @@ export default function App() {
 
   // ------------------ Nueva Función: registerUser ------------------
   const registerUser = useCallback(async (name, surname, dni) => {
-    if (demo) return toast.success("Demo: usuario registrado");
+    if (demo) return;
     if (!contract || !account) return toast.error("Conectá tu wallet");
     const fullName = `${name} ${surname}`.trim();
     const dniHash = ethers.keccak256(ethers.toUtf8Bytes(dni));
@@ -1756,7 +1755,6 @@ export default function App() {
       await tx.wait();
       setRegistered(true); // Actualizar estado de registro
       await fetchAll(); // Refrescar datos
-      toast.success("Usuario registrado exitosamente");
     });
   }, [contract, account, demo, run, fetchAll]);
 
@@ -1808,12 +1806,12 @@ export default function App() {
           )}
 
           <AdminPanel />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
             <GroupList />
             <ProposalList />
           </div>
         </div>
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer position="top-right" autoClose={10000} />
       </div>
     </GroupDAOContext.Provider>
   );
