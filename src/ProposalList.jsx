@@ -158,7 +158,7 @@ export default function ProposalList() {
       actions={<div className="flex items-center gap-2 text-sm text-gray-500"><Loader2 className="w-4 h-4 animate-spin" hidden={!loadingProposals} /> {loadingProposals && "Actualizando votaciones…"}</div>}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
+        <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
           <div className="flex justify-between mb-2">
             <h2 className="text-sm font-semibold">Votaciones en curso</h2>
             <input
@@ -176,8 +176,9 @@ export default function ProposalList() {
               <Skeleton className="h-6 w-full" />
             </div>
           ) : (
-          (demo ? demoProposals : activeProposals).map(p => (
-            <div key={p.id} className={`relative border-2 rounded-xl p-3 shadow-sm ${nowSec() > p.endTime ? "bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-500" : "bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-600"}`}>
+            <div className="mt-2 space-y-3">
+              {(demo ? demoProposals : activeProposals).map(p => (
+                <div key={p.id} className={`relative border-2 rounded-xl p-3 shadow-sm ${nowSec() > p.endTime ? "bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-500" : "bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-600"}`}>
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
@@ -271,10 +272,11 @@ export default function ProposalList() {
                 </div>
               )}
             </div>
-          ))
+              ))}
+            </div>
           )}
         </div>
-        <div>
+        <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
           <div className="flex justify-between mb-2">
             <h2 className="text-sm font-semibold">Votaciones finalizadas</h2>
             <input
@@ -292,8 +294,9 @@ export default function ProposalList() {
               <Skeleton className="h-6 w-full" />
             </div>
           ) : (
-          (demo ? demoProposals : closedProposals).map(p => (
-            <div key={p.id} className="relative border-2 rounded-xl p-3 shadow-sm bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-500">
+            <div className="mt-2 space-y-3">
+              {(demo ? demoProposals : closedProposals).map(p => (
+                <div key={p.id} className="relative border-2 rounded-xl p-3 shadow-sm bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-500">
               <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end">
                 {(p.groupIds || [p.groupId]).map(gid => {
                   const g = (demo ? demoGroups : groups).find(x => x.id === gid) || { id: gid, name: `Grupo ${gid}` };
@@ -330,7 +333,8 @@ export default function ProposalList() {
                 </div>
               </div>
             </div>
-          ))
+              ))}
+            </div>
           )}
         </div>
       </div>
