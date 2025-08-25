@@ -225,7 +225,7 @@ export default function AdminPanel() {
             <button
               disabled={isBusy("registerUser")}
               type="submit"
-              className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90"
+              className="rounded-xl bg-black text-white dark:bg-white dark:text-black px-4 py-2 flex items-center gap-2 hover:opacity-90"
               aria-label="Registrar usuario"
             >
               {isBusy("registerUser") && <Loader2 className="w-4 h-4 animate-spin" />} Registrar
@@ -362,7 +362,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("createGroup")}
                   type="submit"
-                  className="w-fit rounded-xl bg-black text-white px-3 h-10 flex items-center justify-center gap-2 hover:opacity-90"
+                  className="w-fit rounded-xl bg-black text-white dark:bg-white dark:text-black px-3 h-10 flex items-center justify-center gap-2 hover:opacity-90"
                   aria-label="Crear grupo"
                 >
                   {isBusy("createGroup") && <Loader2 className="w-4 h-4 animate-spin" />} Crear grupo
@@ -486,7 +486,7 @@ export default function AdminPanel() {
                 <button
                   disabled={isBusy("createProposal")}
                   type="submit"
-                  className="rounded-xl bg-black text-white px-4 py-2 flex items-center gap-2 hover:opacity-90 w-fit justify-self-start"
+                  className="rounded-xl bg-black text-white dark:bg-white dark:text-black px-4 py-2 flex items-center gap-2 hover:opacity-90 w-fit justify-self-start"
                   aria-label="Crear propuesta"
                 >
                   {isBusy("createProposal") && <Loader2 className="w-4 h-4 animate-spin" />} Crear propuesta

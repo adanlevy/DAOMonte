@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function Card({ title, icon, children, actions, className = "" }) {
+export default function Card({ title, icon, children, actions, className = "bg-white dark:bg-gray-800" }) {
   return (
-    <div className={`rounded-2xl shadow-sm border p-4 bg-white dark:bg-gray-800 ${className}`}>
+    <div className={`rounded-2xl shadow-sm border p-4 ${className}`}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 font-semibold text-lg">
           {icon}

@@ -180,7 +180,7 @@ export default function RosterTable() {
             if (!addrs.length) return toast.error("Seleccioná al menos una persona");
             await actionBulkAddToGroup(addrs, targetGroupId);
           }}
-          className="rounded-xl bg-black text-white px-4 h-10 flex items-center gap-2 hover:opacity-90"
+          className="rounded-xl bg-black text-white dark:bg-white dark:text-black px-4 h-10 flex items-center gap-2 hover:opacity-90"
           aria-label="Agregar usuarios seleccionados al grupo"
         >
           {isBusy("bulkAdd") && <Loader2 className="w-4 h-4 animate-spin" />} Agregar seleccionados

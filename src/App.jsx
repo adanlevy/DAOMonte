@@ -1785,7 +1785,7 @@ export default function App() {
                 <RefreshCcw className={`w-4 h-4 ${loadingAll ? "animate-spin" : ""}`} /> {loadingAll ? 'Actualizando…' : 'Actualizar'}
               </button>
               {!account ? (
-                <button onClick={connect} disabled={isBusy('connect')} className="px-3 py-2 rounded-xl bg-black text-white flex items-center gap-1 disabled:opacity-50" aria-label="Conectar wallet">
+                <button onClick={connect} disabled={isBusy('connect')} className="px-3 py-2 rounded-xl bg-black text-white dark:bg-white dark:text-black flex items-center gap-1 disabled:opacity-50" aria-label="Conectar wallet">
                   {isBusy('connect') && <Loader2 className="w-4 h-4 animate-spin"/>}
                   <LogIn className="w-4 h-4"/> Conectar
                 </button>
