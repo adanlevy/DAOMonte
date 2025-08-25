@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { Shield, ThumbsUp, ThumbsDown, CircleSlash, Loader2 } from "lucide-react";
-import { toast } from "react-toastify";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Card from "./components/Card";
