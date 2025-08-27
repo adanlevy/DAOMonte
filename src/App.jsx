@@ -14,6 +14,7 @@ import ProposalList from "./ProposalList";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { useAccount, useWalletClient } from "wagmi";
 import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 
 // Utility to bridge a viem wallet client to an ethers Signer
 async function walletClientToSigner(walletClient) {
@@ -1406,10 +1407,27 @@ export default function App() {
 
   const isBusy = (k) => !!busy[k];
 
-  const handleEmailLogin = useCallback(() => {
-    // TODO: Integrar proveedor de wallet embebida (Web3Auth, Privy, Magic, etc.)
-    toast.info("Login con email/passkey no implementado");
-  }, []);
+  const { login } = usePrivy();
+  const { wallets } = useWallets();
+
+  const handlePrivyLogin = useCallback(async () => {
+    try {
+      await login({ loginMethods: ["email"], createPrivyWallet: true });
+      const embedded = wallets.find((w) => w.type === "embedded");
+      if (embedded) {
+        const provider = await embedded.getEthereumProvider();
+        const ethersProvider = new ethers.BrowserProvider(provider);
+        const signer = await ethersProvider.getSigner();
+        const _contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+        setAccount(await signer.getAddress());
+        setContract(_contract);
+        toast.success("Sesión iniciada con Privy");
+      }
+    } catch (e) {
+      console.error("Error en login con Privy", e);
+      toast.error("Error al iniciar sesión con Privy");
+    }
+  }, [login, wallets]);
 
   const run = useCallback(async (key, fn) => {
     setBusy((s) => ({ ...s, [key]: true }));
@@ -1826,7 +1844,7 @@ export default function App() {
                 </button>
               )}
               <button
-                onClick={handleEmailLogin}
+                onClick={handlePrivyLogin}
                 className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
               >
                 Entrar con email/passkey
