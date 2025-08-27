@@ -13,7 +13,8 @@ This project uses React and Vite.
    cp .env.example .env
    # edit .env and set VITE_WALLETCONNECT_PROJECT_ID
    ```
-   Without this value the app will throw an error at startup.
+   Without this value the app will still load but WalletConnect features
+   will be disabled and a warning will appear at startup.
 
 ## Development
 
