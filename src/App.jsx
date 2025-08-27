@@ -13,7 +13,7 @@ import GroupList from "./GroupList";
 import ProposalList from "./ProposalList";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { useAccount, useWalletClient } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 
 // Utility to bridge a viem wallet client to an ethers Signer
 async function walletClientToSigner(walletClient) {
@@ -1355,6 +1355,14 @@ export default function App() {
 
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
+  const { openConnectModal } = useConnectModal();
+  const isMobile = useMemo(
+    () =>
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      ),
+    [],
+  );
 
   const resetState = useCallback(() => {
     setIsAdmin(false);
@@ -1401,6 +1409,28 @@ export default function App() {
   const run = useCallback(async (key, fn) => {
     setBusy((s) => ({ ...s, [key]: true }));
     try {
+      if (walletClient && walletClient.chain.id !== AMOY.chainIdDec) {
+        try {
+          await walletClient.switchChain({ id: AMOY.chainIdDec });
+        } catch (err) {
+          if (err?.code === 4902) {
+            try {
+              await walletClient.request({
+                method: "wallet_addEthereumChain",
+                params: [AMOY],
+              });
+            } catch {
+              toast.error(
+                "Tu wallet no soporta auto-switch. Cambiá manualmente a Polygon Amoy.",
+              );
+              return;
+            }
+          } else {
+            toast.error("Cambiá a Polygon Amoy en tu wallet");
+            return;
+          }
+        }
+      }
       await fn();
     } catch (e) {
       let msg = e?.shortMessage || e?.message || "Error en la acción";
@@ -1415,7 +1445,7 @@ export default function App() {
     } finally {
       setBusy((s) => ({ ...s, [key]: false }));
     }
-  }, []);
+  }, [walletClient]);
 
   const rosterIndex = useMemo(() => {
     const m = new Map();
@@ -1736,6 +1766,26 @@ export default function App() {
     });
   }, [contract, account, demo, run, fetchAll]);
 
+  const addTokenToWallet = useCallback(async () => {
+    if (!walletClient) return toast.error("Conectá tu wallet");
+    try {
+      await walletClient.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: CONTRACT_ADDRESS,
+            symbol: "GDAO",
+            decimals: 18,
+          },
+        },
+      });
+      toast.success("Token agregado a tu wallet");
+    } catch {
+      toast.error("Tu wallet no soporta agregar activos automáticamente");
+    }
+  }, [walletClient]);
+
   // ------------------ Render ------------------
   return (
     <GroupDAOContext.Provider value={{
@@ -1762,7 +1812,27 @@ export default function App() {
               <button onClick={fetchAll} disabled={loadingAll || !contract} className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm disabled:opacity-50" aria-label="Actualizar datos">
                 <RefreshCcw className={`w-4 h-4 ${loadingAll ? "animate-spin" : ""}`} /> {loadingAll ? 'Actualizando…' : 'Actualizar'}
               </button>
-              <ConnectButton />
+              {account && (
+                <button
+                  onClick={addTokenToWallet}
+                  className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
+                >
+                  Agregar token
+                </button>
+              )}
+              {isMobile ? (
+                <button
+                  onClick={openConnectModal}
+                  className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
+                >
+                  Abrir en mi wallet
+                </button>
+              ) : (
+                <>
+                  <span className="text-sm text-gray-500">Escaneá con tu wallet</span>
+                  <ConnectButton />
+                </>
+              )}
             </div>
           </header>
 
