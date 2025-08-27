@@ -16,15 +16,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
 
 if (!projectId) {
-  throw new Error(
-    "Missing VITE_WALLETCONNECT_PROJECT_ID. Check your .env file.",
+  // Provide a more forgiving fallback so the app can still start.
+  // WalletConnect features will be disabled without a valid project ID.
+  console.warn(
+    "VITE_WALLETCONNECT_PROJECT_ID is missing. WalletConnect will be disabled.",
   );
 }
 
 const config = createConfig(
   getDefaultConfig({
     appName: "GroupDAO",
-    projectId,
+    projectId: projectId || "demo",
     chains: [polygonAmoy],
     transports: {
       [polygonAmoy.id]: http(),
