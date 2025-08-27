@@ -13,8 +13,13 @@ import GroupList from "./GroupList";
 import ProposalList from "./ProposalList";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { useAccount, useWalletClient } from "wagmi";
-import { walletClientToSigner } from "viem/ethers";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+// Utility to bridge a viem wallet client to an ethers Signer
+async function walletClientToSigner(walletClient) {
+  const provider = new ethers.BrowserProvider(walletClient.transport);
+  return await provider.getSigner(walletClient.account.address);
+}
 
 // ------------------ CONFIG ------------------
 const AMOY = {
