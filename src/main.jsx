@@ -13,10 +13,18 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+
+if (!projectId) {
+  throw new Error(
+    "Missing VITE_WALLETCONNECT_PROJECT_ID. Check your .env file.",
+  );
+}
+
 const config = createConfig(
   getDefaultConfig({
     appName: "GroupDAO",
-    projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
+    projectId,
     chains: [polygonAmoy],
     transports: {
       [polygonAmoy.id]: http(),

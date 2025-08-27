@@ -1,12 +1,28 @@
-# React + Vite
+# GroupDAO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project uses React and Vite.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create a `.env` file based on `.env.example` and add your WalletConnect Cloud project ID:
+   ```bash
+   cp .env.example .env
+   # edit .env and set VITE_WALLETCONNECT_PROJECT_ID
+   ```
+   Without this value the app will throw an error at startup.
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Start the development server:
+```bash
+npm run dev
+```
+
+Lint the project:
+```bash
+npm run lint
+```
