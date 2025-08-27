@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import "./index.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { WagmiProvider, createConfig, http } from "wagmi";
+import { WagmiProvider, http } from "wagmi";
 import { polygonAmoy } from "wagmi/chains";
 import {
   RainbowKitProvider,
@@ -23,16 +23,14 @@ if (!projectId) {
   );
 }
 
-const config = createConfig(
-  getDefaultConfig({
-    appName: "GroupDAO",
-    projectId: projectId || "demo",
-    chains: [polygonAmoy],
-    transports: {
-      [polygonAmoy.id]: http(),
-    },
-  }),
-);
+const config = getDefaultConfig({
+  appName: "GroupDAO",
+  projectId: projectId || "demo",
+  chains: [polygonAmoy],
+  transports: {
+    [polygonAmoy.id]: http(),
+  },
+});
 
 const queryClient = new QueryClient();
 
