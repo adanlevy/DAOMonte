@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ethers } from "ethers";
 import {
   Upload, ThumbsUp, ThumbsDown, Users, Settings, Shield, Hash, ListFilter,
-  Loader2, RefreshCcw, ChevronDown, ChevronRight, LogIn, LogOut, UserCog,
+  RefreshCcw, ChevronDown, ChevronRight, UserCog,
   Eye, LinkIcon, Hourglass, CircleSlash, Pause, Play
 } from "lucide-react";
 import Papa from "papaparse";
@@ -12,6 +12,9 @@ import AdminPanel from "./AdminPanel";
 import GroupList from "./GroupList";
 import ProposalList from "./ProposalList";
 import ThemeSwitcher from "./components/ThemeSwitcher";
+import { useAccount, useWalletClient } from "wagmi";
+import { walletClientToSigner } from "viem/ethers";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 // ------------------ CONFIG ------------------
 const AMOY = {
@@ -1345,6 +1348,49 @@ export default function App() {
   const [csvData, setCsvData] = useState([]);
   const [baseAddresses, setBaseAddresses] = useState([]);
 
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const resetState = useCallback(() => {
+    setIsAdmin(false);
+    setIsOwner(false);
+    setRegistered(null);
+    setGroups([]);
+    setMyGroupIds([]);
+    setProposals([]);
+    setGroupMembersCache({});
+    setAdmins([]);
+    setBaseAddresses([]);
+    setCsvData([]);
+    setRoster([]);
+  }, []);
+
+  useEffect(() => {
+    if (address) setAccount(ethers.getAddress(address));
+    else setAccount(null);
+  }, [address]);
+
+  useEffect(() => {
+    const setup = async () => {
+      if (walletClient) {
+        const signer = await walletClientToSigner(walletClient);
+        const _contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+        setContract(_contract);
+      } else {
+        resetState();
+        try {
+          const provider = new ethers.JsonRpcProvider(AMOY.rpcUrls[0]);
+          const _contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+          setContract(_contract);
+        } catch (e) {
+          console.error("Error inicializando contrato:", e);
+          setError("No se pudo conectar al nodo RPC. Verifica la red.");
+        }
+      }
+    };
+    setup();
+  }, [walletClient, resetState]);
+
   const isBusy = (k) => !!busy[k];
 
   const run = useCallback(async (key, fn) => {
@@ -1412,19 +1458,6 @@ export default function App() {
       myVote: 0
     }
   ];
-
-  // ------------------ Web3 Helpers ------------------
-  const ensureAmoy = useCallback(async () => {
-    if (!window.ethereum) throw new Error("MetaMask no detectado");
-    const cid = await window.ethereum.request({ method: "eth_chainId" });
-    if (cid !== AMOY.chainIdHex) {
-      try { await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: AMOY.chainIdHex }] }); }
-      catch (err) {
-        if (err.code === 4902) await window.ethereum.request({ method: "wallet_addEthereumChain", params: [AMOY] });
-        else throw err;
-      }
-    }
-  }, []);
 
   // ------------------ Acciones ------------------
   const fetchAdmins = useCallback(async () => {
@@ -1560,66 +1593,6 @@ export default function App() {
       setLoadingAll(false);
     }
   }, [contract, account, demo, fetchAdmins, buildRegisteredBase]);
-
-
-  const connect = useCallback(async () => {
-    await run('connect', async () => {
-      await ensureAmoy();
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const _acc = await signer.getAddress();
-      const _contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-      setAccount(_acc);
-      setContract(_contract);
-    });
-  }, [ensureAmoy, run]);
-
-  const disconnect = useCallback(() => {
-    run('disconnect', async () => {
-      setAccount(null);
-      setContract(null);
-      setIsAdmin(false);
-      setIsOwner(false);
-      setRegistered(null);
-      setGroups([]);
-      setMyGroupIds([]);
-      setProposals([]);
-      setGroupMembersCache({});
-      setAdmins([]);
-      setBaseAddresses([]);
-      setCsvData([]);
-      setRoster([]);
-    });
-  }, [run]);
-
-  // Inicialización con proveedor HTTP estático
-  useEffect(() => {
-    const initializeContract = async () => {
-      try {
-        const provider = new ethers.JsonRpcProvider(AMOY.rpcUrls[0]);
-        const _contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
-        setContract(_contract); // Contrato de solo lectura inicialmente
-      } catch (e) {
-        console.error("Error inicializando contrato:", e);
-        setError("No se pudo conectar al nodo RPC. Verifica la red.");
-      }
-    };
-    initializeContract();
-  }, []);
-
-  // Escuchar eventos y cambios de cuenta/chain solo si MetaMask está disponible
-  useEffect(() => {
-    if (!window.ethereum) return;
-    const onAccounts = (accs) => { if (accs?.length) setAccount(ethers.getAddress(accs[0])); else disconnect(); };
-    const onChain = () => ensureAmoy().catch(() => {});
-    window.ethereum.on("accountsChanged", onAccounts);
-    window.ethereum.on("chainChanged", onChain);
-    return () => {
-      window.ethereum.removeListener("accountsChanged", onAccounts);
-      window.ethereum.removeListener("chainChanged", onChain);
-    };
-  }, [connect, disconnect, ensureAmoy]);
-
   // Obtener datos completos al establecer cuenta y contrato
   useEffect(() => {
     if (!contract || !account || demo) return;
@@ -1784,20 +1757,7 @@ export default function App() {
               <button onClick={fetchAll} disabled={loadingAll || !contract} className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm disabled:opacity-50" aria-label="Actualizar datos">
                 <RefreshCcw className={`w-4 h-4 ${loadingAll ? "animate-spin" : ""}`} /> {loadingAll ? 'Actualizando…' : 'Actualizar'}
               </button>
-              {!account ? (
-                <button onClick={connect} disabled={isBusy('connect')} className="px-3 py-2 rounded-xl bg-black text-white dark:bg-white dark:text-black flex items-center gap-1 disabled:opacity-50" aria-label="Conectar wallet">
-                  {isBusy('connect') && <Loader2 className="w-4 h-4 animate-spin"/>}
-                  <LogIn className="w-4 h-4"/> Conectar
-                </button>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ring-gray-200">{account.slice(0, 6)}…{account.slice(-4)}</span>
-                  <button onClick={disconnect} disabled={isBusy('disconnect')} className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm disabled:opacity-50" aria-label="Desconectar wallet">
-                    {isBusy('disconnect') && <Loader2 className="w-4 h-4 animate-spin"/>}
-                    <LogOut className="w-4 h-4"/> Desconectar
-                  </button>
-                </div>
-              )}
+              <ConnectButton />
             </div>
           </header>
 
