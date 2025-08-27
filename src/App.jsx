@@ -1406,6 +1406,11 @@ export default function App() {
 
   const isBusy = (k) => !!busy[k];
 
+  const handleEmailLogin = useCallback(() => {
+    // TODO: Integrar proveedor de wallet embebida (Web3Auth, Privy, Magic, etc.)
+    toast.info("Login con email/passkey no implementado");
+  }, []);
+
   const run = useCallback(async (key, fn) => {
     setBusy((s) => ({ ...s, [key]: true }));
     try {
@@ -1820,18 +1825,21 @@ export default function App() {
                   Agregar token
                 </button>
               )}
+              <button
+                onClick={handleEmailLogin}
+                className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
+              >
+                Entrar con email/passkey
+              </button>
               {isMobile ? (
                 <button
                   onClick={openConnectModal}
                   className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
                 >
-                  Abrir en mi wallet
+                  Conectar wallet
                 </button>
               ) : (
-                <>
-                  <span className="text-sm text-gray-500">Escaneá con tu wallet</span>
-                  <ConnectButton />
-                </>
+                <ConnectButton label="Conectar wallet" />
               )}
             </div>
           </header>
