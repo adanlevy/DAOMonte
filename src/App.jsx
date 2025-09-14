@@ -1406,11 +1406,6 @@ export default function App() {
 
   const isBusy = (k) => !!busy[k];
 
-  const handleEmailLogin = useCallback(() => {
-    // TODO: Integrar proveedor de wallet embebida (Web3Auth, Privy, Magic, etc.)
-    toast.info("Login con email/passkey no implementado");
-  }, []);
-
   const run = useCallback(async (key, fn) => {
     setBusy((s) => ({ ...s, [key]: true }));
     try {
@@ -1771,26 +1766,6 @@ export default function App() {
     });
   }, [contract, account, demo, run, fetchAll]);
 
-  const addTokenToWallet = useCallback(async () => {
-    if (!walletClient) return toast.error("Conectá tu wallet");
-    try {
-      await walletClient.request({
-        method: "wallet_watchAsset",
-        params: {
-          type: "ERC20",
-          options: {
-            address: CONTRACT_ADDRESS,
-            symbol: "GDAO",
-            decimals: 18,
-          },
-        },
-      });
-      toast.success("Token agregado a tu wallet");
-    } catch {
-      toast.error("Tu wallet no soporta agregar activos automáticamente");
-    }
-  }, [walletClient]);
-
   // ------------------ Render ------------------
   return (
     <GroupDAOContext.Provider value={{
@@ -1816,20 +1791,6 @@ export default function App() {
               </label>
               <button onClick={fetchAll} disabled={loadingAll || !contract} className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm disabled:opacity-50" aria-label="Actualizar datos">
                 <RefreshCcw className={`w-4 h-4 ${loadingAll ? "animate-spin" : ""}`} /> {loadingAll ? 'Actualizando…' : 'Actualizar'}
-              </button>
-              {account && (
-                <button
-                  onClick={addTokenToWallet}
-                  className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
-                >
-                  Agregar token
-                </button>
-              )}
-              <button
-                onClick={handleEmailLogin}
-                className="px-3 py-2 rounded-xl border flex items-center gap-1 text-sm"
-              >
-                Entrar con email/passkey
               </button>
               {isMobile ? (
                 <button

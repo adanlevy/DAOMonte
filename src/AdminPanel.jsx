@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useGroupDAO } from "./GroupDAOContext";
 import { useForm } from "react-hook-form";
 import { ethers } from "ethers";
-import { UserCog, Users, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, FileText, Shield, Pause, Play, UserPlus } from "lucide-react";
+import { UserCog, Users, Plus, ListFilter, Loader2, Link as LinkIcon, Settings, ChevronRight, ChevronDown, FileText, Shield, Pause, Play, UserPlus } from "lucide-react";
 import { toast } from "react-toastify";
 import RosterTable from "./RosterTable";
 import Card from "./components/Card";
@@ -346,7 +346,11 @@ export default function AdminPanel() {
             {/* Creación de grupo */}
             <div className="border rounded-xl p-3 bg-white dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-2 mb-2 text-sm font-medium">
-                <Users className="w-4 h-4" /> Creación de grupo
+                <span className="relative w-4 h-4">
+                  <Users className="w-4 h-4" />
+                  <Plus className="absolute -right-1 -bottom-1 w-3 h-3 bg-white dark:bg-gray-800 rounded-full" />
+                </span>
+                Creación de grupo
               </div>
               <form onSubmit={handleGroupSubmit(onCreateGroup)} className="flex flex-wrap gap-2 items-end">
                 <div className="w-1/2 min-w-[200px]">
